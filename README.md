@@ -8,7 +8,7 @@ prototype- https://noor-r.github.io/SolutionBridge/
 [![Streamlit](https://img.shields.io/badge/Streamlit-1.42.0-FF4B4B.svg)](https://streamlit.io)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-SolutionBridge is an enterprise-grade platform specifically designed for a **Product Solutions Engineer (PSE)** portfolio. It simulates a production SaaS integration environment where external customers consume REST APIs, experience real-world technical failures, and requires a solutions engineer to systematically investigate the issue across multiple architectural tiers:
+SolutionBridge is an enterprise-grade platform specifically designed to simulates a production SaaS integration environment where external customers consume REST APIs, experience real-world technical failures, and requires a solutions engineer to systematically investigate the issue across multiple architectural tiers:
 
 $$\text{Customer Integration} \rightarrow \text{API Testing} \rightarrow \text{SQL Validation} \rightarrow \text{Log Analysis} \rightarrow \text{System Monitoring} \rightarrow \text{ML-Assisted Diagnosis} \rightarrow \text{Troubleshooting}$$
 
