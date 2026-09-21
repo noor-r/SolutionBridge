@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SolutionBridge — Interactive PSE Prototype</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    /* Custom compact scrollbars */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+    .tab-active { border-bottom: 2px solid var(--primary); color: var(--foreground); font-weight: 600; }
+    .tab-inactive { color: var(--muted-foreground); border-bottom: 2px solid transparent; }
+    .tab-inactive:hover { color: var(--foreground); }
+    .badge-pulse { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+  </style>
+</head>
+<body class="bg-transparent text-[var(--foreground)] antialiased p-2">
+  <div class="bg-[var(--card)] text-[var(--foreground)] border border-[var(--border)] rounded-xl p-4 shadow-sm space-y-4 max-w-full">
+    
+    <!-- Header: Status, Title, Correlation ID -->
+    <div class="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-[var(--border)]">
+      <div class="flex items-center space-x-2">
+        <div class="w-3 h-3 rounded-full bg-emerald-500 badge-pulse"></div>
+        <div>
+          <h1 class="text-base font-bold text-[var(--foreground)] tracking-tight flex items-center gap-2">
+            SolutionBridge
+            <span class="text-xs px-2 py-0.5 rounded-full font-medium bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+              PSE Console
+            </span>
+          </h1>
+          <p class="text-xs text-[var(--muted-foreground)]">Product Integration &amp; ML-Assisted Troubleshooting Platform</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2 text-xs">
+        <span class="text-[var(--muted-foreground)]">Trace ID:</span>
+        <code id="currentRequestId" class="font-mono bg-[var(--background)] px-2 py-0.5 rounded border border-[var(--border)] text-indigo-600 dark:text-indigo-400 font-semibold">
+          REQ-7F8A1B2C
+        </code>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="flex items-center space-x-4 border-b border-[var(--border)] text-xs">
+      <button onclick="switchTab('triage')" id="tab-triage" class="pb-2 tab-active transition-colors">
+        ⚡ Fault Simulation &amp; Triage
+      </button>
+      <button onclick="switchTab('sql')" id="tab-sql" class="pb-2 tab-inactive transition-colors">
+        🔍 SQL Diagnostics (11 Rules)
+      </button>
+      <button onclick="switchTab('ml')" id="tab-ml" class="pb-2 tab-inactive transition-colors">
+        🧠 ML &amp; FAISS Vectors
+      </button>
+      <button onclick="switchTab('postmortem')" id="tab-postmortem" class="pb-2 tab-inactive transition-colors">
+        📋 Dual Postmortems
+      </button>
+    </div>
+
+    <!-- TAB 1: FAULT SIMULATION & 5-TIER TRIAGE -->
+    <div id="view-triage" class="space-y-3">
+      <!-- Scenario Selector & Action -->
+      <div class="bg-[var(--background)] p-3 rounded-lg border border-[var(--border)] space-y-2">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <label class="text-xs font-semibold text-[var(--foreground)]">Select Integration Fault Scenario:</label>
+          <div class="flex items-center gap-1.5">
+            <span id="scenarioStatusBadge" class="text-[11px] px-2 py-0.5 rounded font-mono font-medium bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">
+              Ready to execute
+            </span>
+          </div>
+        </div>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-5 gap-1.5 text-xs">
+          <button onclick="selectScenario('A')" id="btn-scen-A" class="scen-btn px-2.5 py-1.5 rounded border border-indigo-500 bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 font-medium text-left">
+            <div class="font-bold">Scenario A</div>
+            <div class="text-[10px] opacity-80 truncate">DB Pool Timeout (500)</div>
+          </button>
+          <button onclick="selectScenario('B')" id="btn-scen-B" class="scen-btn px-2.5 py-1.5 rounded border border-[var(--border)] hover:bg-[var(--card)] text-[var(--foreground)] text-left">
+            <div class="font-bold">Scenario B</div>
+            <div class="text-[10px] text-[var(--muted-foreground)] truncate">Invalid HMAC (401)</div>
+          </button>
+          <button onclick="selectScenario('C')" id="btn-scen-C" class="scen-btn px-2.5 py-1.5 rounded border border-[var(--border)] hover:bg-[var(--card)] text-[var(--foreground)] text-left">
+            <div class="font-bold">Scenario C</div>
+            <div class="text-[10px] text-[var(--muted-foreground)] truncate">Latency Spike (200)</div>
+          </button>
+          <button onclick="selectScenario('D')" id="btn-scen-D" class="scen-btn px-2.5 py-1.5 rounded border border-[var(--border)] hover:bg-[var(--card)] text-[var(--foreground)] text-left">
+            <div class="font-bold">Scenario D</div>
+            <div class="text-[10px] text-[var(--muted-foreground)] truncate">Infra Saturated (503)</div>
+          </button>
+          <button onclick="selectScenario('E')" id="btn-scen-E" class="scen-btn px-2.5 py-1.5 rounded border border-[var(--border)] hover:bg-[var(--card)] text-[var(--foreground)] text-left">
+            <div class="font-bold">Scenario E</div>
+            <div class="text-[10px] text-[var(--muted-foreground)] truncate">Silent Rollback (201)</div>
+          </button>
+        </div>
+
+        <div class="flex items-center justify-between pt-1">
+          <p id="scenarioDesc" class="text-xs text-[var(--muted-foreground)] italic">
+            Injects 5000ms database connection acquisition hang simulating connection pool exhaustion under load.
+          </p>
+          <button onclick="runDiagnosis()" id="runDiagnosisBtn" class="px-3 py-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded text-xs font-semibold shadow-sm flex items-center gap-1.5">
+            <span>▶</span> Run Full 5-Tier Diagnosis
+          </button>
+        </div>
+      </div>
+
+      <!-- 5-Tier Diagnostic Findings Accordion / Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+        
+        <!-- Tier 1 & 2: API Contract & SQL State -->
+        <div class="space-y-3">
+          <!-- Tier 1: API Response -->
+          <div class="bg-[var(--background)] p-3 rounded-lg border border-[var(--border)] space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="font-semibold text-[var(--foreground)] flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                Tier 1: API Contract Response
+              </span>
+              <span id="tier1Status" class="font-mono font-bold text-rose-500 bg-rose-500/10 px-1.5 py-0.5 rounded text-[11px]">
+                HTTP 500 Internal Server Error
+              </span>
+            </div>
+            <div class="bg-[var(--card)] p-2 rounded border border-[var(--border)] font-mono text-[11px] space-y-1 text-[var(--foreground)]">
+              <div class="text-[var(--muted-foreground)]">// Endpoint: POST /api/v1/orders</div>
+              <div>Latency: <span id="tier1Latency" class="text-amber-500 font-bold">5,002 ms</span> (SLA: &lt;500ms)</div>
+              <div id="tier1Body" class="text-rose-500 dark:text-rose-400 truncate">
+                {"detail": "Database connection acquisition timeout after 5000ms"}
+              </div>
+            </div>
+          </div>
+
+          <!-- Tier 2: SQL Validation -->
+          <div class="bg-[var(--background)] p-3 rounded-lg border border-[var(--border)] space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="font-semibold text-[var(--foreground)] flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+                Tier 2: SQL Validation Result
+              </span>
+              <span id="tier2Flag" class="font-mono text-[11px] font-semibold text-rose-500">
+                POOL_SATURATED
+              </span>
+            </div>
+            <div class="bg-[var(--card)] p-2 rounded border border-[var(--border)] font-mono text-[11px] space-y-1">
+              <div class="text-[var(--muted-foreground)]">Query: <span class="text-indigo-400">inspect_db_contention_metrics</span></div>
+              <div id="tier2Result" class="text-[var(--foreground)]">
+                active_connections: <span class="text-rose-500 font-bold">50/50 (100%)</span> | max_overflow: 0 | lock_waits: 14
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tier 3 & 4: Correlated Log Trace & ML Advisory -->
+        <div class="space-y-3">
+          <!-- Tier 3: Distributed Logs -->
+          <div class="bg-[var(--background)] p-3 rounded-lg border border-[var(--border)] space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="font-semibold text-[var(--foreground)] flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-indigo-500"></span>
+                Tier 3: Distributed Log Trace
+              </span>
+              <span class="font-mono text-[10px] text-[var(--muted-foreground)]">Matched REQ-7F8A1B2C</span>
+            </div>
+            <div id="tier3Logs" class="bg-[var(--card)] p-2 rounded border border-[var(--border)] font-mono text-[10.5px] space-y-1 text-[var(--muted-foreground)] h-20 overflow-y-auto">
+              <div><span class="text-emerald-500">[INFO]</span> [app.core.middleware] Request received POST /api/v1/orders</div>
+              <div><span class="text-amber-500">[WARN]</span> [app.db.database] DB connection wait > 2000ms</div>
+              <div class="text-rose-500 font-semibold">[ERROR] [app.db.database] TimeoutError: QueuePool limit of size 50 reached</div>
+            </div>
+          </div>
+
+          <!-- Tier 4 & 5: ML Signals -->
+          <div class="bg-[var(--background)] p-3 rounded-lg border border-[var(--border)] space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="font-semibold text-[var(--foreground)] flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-purple-500"></span>
+                Tier 4 &amp; 5: ML Advisory &amp; Similarity
+              </span>
+              <span class="text-[10px] px-1.5 py-0.5 rounded bg-purple-500/10 text-purple-600 dark:text-purple-400 font-mono">
+                FAISS Top-1 Match
+              </span>
+            </div>
+            <div class="grid grid-cols-2 gap-2 text-[11px]">
+              <div class="bg-[var(--card)] p-2 rounded border border-[var(--border)]">
+                <div class="text-[var(--muted-foreground)]">Isolation Forest</div>
+                <div id="mlAnomalyScore" class="font-bold text-rose-500 text-sm">0.96 (Anomaly)</div>
+                <div class="text-[10px] text-[var(--muted-foreground)]">Baseline: Normal &lt; 0.50</div>
+              </div>
+              <div class="bg-[var(--card)] p-2 rounded border border-[var(--border)]">
+                <div class="text-[var(--muted-foreground)]">7-Class Classifier</div>
+                <div id="mlCategoryScore" class="font-bold text-indigo-500 text-sm">Database (96.0%)</div>
+                <div class="text-[10px] text-[var(--muted-foreground)]">Advisory weight: High</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Root Cause Synthesis Card -->
+      <div class="p-3 rounded-lg bg-indigo-50 dark:bg-indigo-950/30 border border-indigo-200 dark:border-indigo-900/50 flex flex-wrap items-center justify-between gap-2 text-xs">
+        <div>
+          <span class="font-bold text-indigo-900 dark:text-indigo-200 flex items-center gap-1.5">
+            <span>🎯</span> Synthesized Root Cause:
+            <span id="synthesizedTitle" class="font-semibold text-rose-600 dark:text-rose-400">Database Connection Pool Saturation</span>
+          </span>
+          <p id="synthesizedAction" class="text-[11px] text-indigo-700 dark:text-indigo-300 mt-0.5">
+            Recommended Action: Inspect database connection pool utilization; scale pool_size from 50 to 100 or kill dormant transactions.
+          </p>
+        </div>
+        <button onclick="switchTab('postmortem')" class="px-2.5 py-1 bg-[var(--card)] hover:bg-[var(--background)] text-[var(--foreground)] border border-[var(--border)] rounded text-[11px] font-semibold">
+          View Full Postmortem →
+        </button>
+      </div>
+    </div>
+
+    <!-- TAB 2: SQL VALIDATION (11 PREDEFINED ROUTINES) -->
+    <div id="view-sql" class="hidden space-y-3 text-xs">
+      <div class="flex flex-wrap items-center justify-between gap-2">
+        <div>
+          <h3 class="font-bold text-sm text-[var(--foreground)]">Parameterized Diagnostic SQL Service</h3>
+          <p class="text-[11px] text-[var(--muted-foreground)]">
+            Guarantees zero arbitrary SQL execution through 11 parameterized, ANSI/MySQL-compatible diagnostic queries.
+          </p>
+        </div>
+        <span class="px-2 py-0.5 rounded text-[11px] bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 font-mono">
+          SQL Injection Protected (:param binding)
+        </span>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <!-- Query Selector List -->
+        <div class="space-y-1 bg-[var(--background)] p-2 rounded-lg border border-[var(--border)] max-h-56 overflow-y-auto">
+          <div class="font-semibold text-[11px] text-[var(--muted-foreground)] px-2 py-1 uppercase tracking-wider">Select Diagnostic Query</div>
+          <button onclick="loadSqlQuery('validate_order_persistence')" class="w-full text-left px-2 py-1.5 rounded hover:bg-[var(--card)] font-mono text-[11px] text-indigo-600 dark:text-indigo-400">1. validate_order_persistence</button>
+          <button onclick="loadSqlQuery('detect_silent_order_rollbacks')" class="w-full text-left px-2 py-1.5 rounded hover:bg-[var(--card)] font-mono text-[11px]">2. detect_silent_order_rollbacks</button>
+          <button onclick="loadSqlQuery('check_duplicate_orders')" class="w-full text-left px-2 py-1.5 rounded hover:bg-[var(--card)] font-mono text-[11px]">3. check_duplicate_orders</button>
+          <button onclick="loadSqlQuery('inspect_endpoint_latency_stats')" class="w-full text-left px-2 py-1.5 rounded hover:bg-[var(--card)] font-mono text-[11px]">4. inspect_endpoint_latency_stats</button>
+          <button onclick="loadSqlQuery('aggregate_error_codes_by_request')" class="w-full text-left px-2 py-1.5 rounded hover:bg-[var(--card)] font-mono text-[11px]">5. aggregate_error_codes_by_request</button>
+          <button onclick="loadSqlQuery('check_customer_failure_rate')" class="w-full text-left px-2 py-1.5 rounded hover:bg-[var(--card)] font-mono text-[11px]">6. check_customer_failure_rate</button>
+          <button onclick="loadSqlQuery('detect_status_mismatches')" class="w-full text-left px-2 py-1.5 rounded hover:bg-[var(--card)] font-mono text-[11px]">7. detect_status_mismatches</button>
+          <button onclick="loadSqlQuery('inspect_db_contention_metrics')" class="w-full text-left px-2 py-1.5 rounded hover:bg-[var(--card)] font-mono text-[11px]">8. inspect_db_contention_metrics</button>
+          <button onclick="loadSqlQuery('find_unhandled_exceptions')" class="w-full text-left px-2 py-1.5 rounded hover:bg-[var(--card)] font-mono text-[11px]">9. find_unhandled_exceptions</button>
+          <button onclick="loadSqlQuery('inspect_customer_integration_health')" class="w-full text-left px-2 py-1.5 rounded hover:bg-[var(--card)] font-mono text-[11px]">10. inspect_customer_integration_health</button>
+          <button onclick="loadSqlQuery('get_top_failing_endpoints')" class="w-full text-left px-2 py-1.5 rounded hover:bg-[var(--card)] font-mono text-[11px]">11. get_top_failing_endpoints</button>
+        </div>
+
+        <!-- Query Code & Live Execution Window -->
+        <div class="sm:col-span-2 space-y-2">
+          <div class="bg-[var(--background)] p-2.5 rounded-lg border border-[var(--border)] space-y-2">
+            <div class="flex items-center justify-between">
+              <span id="selectedQueryName" class="font-mono font-bold text-indigo-500">validate_order_persistence</span>
+              <button onclick="executeSelectedQuery()" class="px-2.5 py-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded text-[11px] font-semibold">
+                Execute Parameterized Query
+              </button>
+            </div>
+            <pre id="selectedQueryCode" class="bg-[var(--card)] p-2 rounded border border-[var(--border)] font-mono text-[10.5px] text-[var(--foreground)] overflow-x-auto">
+SELECT o.id, o.order_number, o.customer_id, o.status, o.total_amount, o.created_at
+FROM orders o
+WHERE o.customer_id = :customer_id AND o.idempotency_key = :idempotency_key;</pre>
+            <div class="flex items-center gap-2 text-[11px]">
+              <span class="text-[var(--muted-foreground)]">Parameters:</span>
+              <code class="font-mono bg-[var(--card)] px-1.5 py-0.5 rounded border border-[var(--border)]">{ customer_id: 1, idempotency_key: "idem_9f82b1" }</code>
+            </div>
+          </div>
+
+          <!-- Execution Output -->
+          <div class="bg-[var(--background)] p-2.5 rounded-lg border border-[var(--border)] space-y-1">
+            <div class="flex items-center justify-between font-mono text-[11px]">
+              <span class="text-[var(--muted-foreground)]">Diagnostic Output:</span>
+              <span id="sqlExecutionStatus" class="text-emerald-500 font-bold">1 row matched in 4.2ms</span>
+            </div>
+            <div id="sqlResultBox" class="bg-[var(--card)] p-2 rounded border border-[var(--border)] font-mono text-[10.5px] text-emerald-600 dark:text-emerald-400 overflow-x-auto">
+              [ { "id": 142, "order_number": "ORD-20260921-00142", "customer_id": 1, "status": "CONFIRMED", "total_amount": 2840.50 } ]
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: ML & FAISS VECTORS -->
+    <div id="view-ml" class="hidden space-y-3 text-xs">
+      <div class="flex items-center justify-between">
+        <div>
+          <h3 class="font-bold text-sm text-[var(--foreground)]">ML Evaluation &amp; Semantic Retrieval System</h3>
+          <p class="text-[11px] text-[var(--muted-foreground)]">
+            Measured benchmark results on independent holdout sets and FAISS 384-d semantic incident search.
+          </p>
+        </div>
+      </div>
+
+      <!-- Real Model Benchmarks -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div class="bg-[var(--background)] p-3 rounded-lg border border-[var(--border)] space-y-1.5">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-[var(--foreground)]">Isolation Forest</span>
+            <span class="text-[10px] px-1.5 py-0.2 rounded bg-emerald-500/10 text-emerald-500 font-mono">Unsupervised</span>
+          </div>
+          <p class="text-[10.5px] text-[var(--muted-foreground)]">Trained on normal telemetry baseline; evaluated on 600 holdout records (400 normal, 200 anomalies).</p>
+          <div class="pt-2 border-t border-[var(--border)] space-y-1 font-mono text-[11px]">
+            <div class="flex justify-between"><span>Precision:</span><span class="font-bold text-emerald-500">0.9346</span></div>
+            <div class="flex justify-between"><span>Recall:</span><span class="font-bold text-emerald-500">1.0000</span></div>
+            <div class="flex justify-between"><span>F1-Score:</span><span class="font-bold text-indigo-500">0.9662</span></div>
+            <div class="flex justify-between"><span>ROC-AUC:</span><span class="font-bold text-indigo-500">1.0000</span></div>
+          </div>
+        </div>
+
+        <div class="bg-[var(--background)] p-3 rounded-lg border border-[var(--border)] space-y-1.5">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-[var(--foreground)]">7-Class Classifier</span>
+            <span class="text-[10px] px-1.5 py-0.2 rounded bg-blue-500/10 text-blue-500 font-mono">Supervised</span>
+          </div>
+          <p class="text-[10.5px] text-[var(--muted-foreground)]">TF-IDF (200 n-grams) + tabular telemetry pipeline evaluated on 210 test samples.</p>
+          <div class="pt-2 border-t border-[var(--border)] space-y-1 font-mono text-[11px]">
+            <div class="flex justify-between"><span>Accuracy:</span><span class="font-bold text-emerald-500">1.0000</span></div>
+            <div class="flex justify-between"><span>Precision:</span><span class="font-bold text-emerald-500">1.0000</span></div>
+            <div class="flex justify-between"><span>Recall:</span><span class="font-bold text-emerald-500">1.0000</span></div>
+            <div class="flex justify-between"><span>Weighted F1:</span><span class="font-bold text-indigo-500">1.0000</span></div>
+          </div>
+        </div>
+
+        <div class="bg-[var(--background)] p-3 rounded-lg border border-[var(--border)] space-y-1.5">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-[var(--foreground)]">FAISS Vector Index</span>
+            <span class="text-[10px] px-1.5 py-0.2 rounded bg-purple-500/10 text-purple-500 font-mono">Flat L2 Index</span>
+          </div>
+          <p class="text-[10.5px] text-[var(--muted-foreground)]">Sentence-Transformers (all-MiniLM-L6-v2) embedding 110 historical production incidents.</p>
+          <div class="pt-2 border-t border-[var(--border)] space-y-1 font-mono text-[11px]">
+            <div class="flex justify-between"><span>Dimensions:</span><span class="font-bold">384</span></div>
+            <div class="flex justify-between"><span>Indexed Vectors:</span><span class="font-bold">110 Cases</span></div>
+            <div class="flex justify-between"><span>Search Latency:</span><span class="font-bold text-emerald-500">&lt; 2.5 ms</span></div>
+            <div class="flex justify-between"><span>Top-k Retrieval:</span><span class="font-bold text-indigo-500">k=3 Nearest</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Vector Query Simulation -->
+      <div class="bg-[var(--background)] p-3 rounded-lg border border-[var(--border)] space-y-2">
+        <div class="font-bold text-[var(--foreground)]">Live FAISS Nearest Incident Retrieval:</div>
+        <div class="bg-[var(--card)] p-2.5 rounded border border-[var(--border)] space-y-1.5 font-mono text-[11px]">
+          <div class="flex justify-between text-indigo-500 font-bold">
+            <span>[INC-2025-089] MySQL Pool Exhaustion During Batch Import</span>
+            <span>Distance: 0.182</span>
+          </div>
+          <p class="text-[10.5px] font-sans text-[var(--muted-foreground)]">
+            Previous Root Cause: Multiple client instances executing bulk orders saturated max_connections=50 without connection pooling timeouts.
+          </p>
+          <div class="text-[10px] text-emerald-600 dark:text-emerald-400">
+            Resolved by: Scaled pool to 100, enabled HikariCP client-side pooling, and deployed query timeout breaker at 3000ms.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 4: DUAL POSTMORTEMS -->
+    <div id="view-postmortem" class="hidden space-y-3 text-xs">
+      <div class="flex items-center justify-between">
+        <div>
+          <h3 class="font-bold text-sm text-[var(--foreground)]">Dual-Target Postmortem Generator</h3>
+          <p class="text-[11px] text-[var(--muted-foreground)]">
+            Generates distinct technical and business postmortems tailored for internal engineering vs external customer leadership.
+          </p>
+        </div>
+        <div class="flex items-center space-x-2">
+          <button onclick="togglePostmortemView('engineer')" id="btn-pm-eng" class="px-2 py-1 rounded bg-indigo-600 text-white font-semibold text-[11px]">
+            Engineer Technical View
+          </button>
+          <button onclick="togglePostmortemView('customer')" id="btn-pm-cust" class="px-2 py-1 rounded bg-[var(--background)] hover:bg-[var(--card)] border border-[var(--border)] text-[var(--foreground)] font-semibold text-[11px]">
+            Customer Executive View
+          </button>
+        </div>
+      </div>
+
+      <!-- Engineer View -->
+      <div id="pm-engineer-box" class="bg-[var(--background)] p-3 rounded-lg border border-[var(--border)] space-y-2">
+        <div class="flex items-center justify-between border-b border-[var(--border)] pb-2 font-mono text-[11px]">
+          <span class="text-rose-500 font-bold">SEV-1 Incident Postmortem (Internal Engineering)</span>
+          <span class="text-[var(--muted-foreground)]">Ref: INC-2026-0922-A</span>
+        </div>
+        <div class="space-y-2 font-mono text-[11px]">
+          <div><span class="text-[var(--muted-foreground)]">Trace Correlation:</span> <span class="text-indigo-400">REQ-7F8A1B2C</span></div>
+          <div><span class="text-[var(--muted-foreground)]">Failing Component:</span> <code class="bg-[var(--card)] px-1 rounded text-rose-500">app/db/database.py:QueuePool</code></div>
+          <div><span class="text-[var(--muted-foreground)]">Root Cause Summary:</span> Exhaustion of the SQLAlchemy QueuePool (size 50, overflow 0) resulting in client requests hanging for 5000ms before returning HTTP 500.</div>
+          <div><span class="text-[var(--muted-foreground)]">Telemetry Correlation:</span> active_connections=50, queue_depth=14, cpu_utilization=48.2%.</div>
+          <div class="pt-2 border-t border-[var(--border)] font-sans">
+            <span class="font-bold text-[var(--foreground)]">Required Technical Action Items:</span>
+            <ul class="list-disc list-inside mt-1 space-y-0.5 text-[var(--muted-foreground)]">
+              <li>Deploy hotfix increasing <code>DATABASE_POOL_SIZE</code> to 100 in <code>app/core/config.py</code>.</li>
+              <li>Add explicit <code>pool_timeout=10</code> and <code>pool_recycle=3600</code> parameters to prevent connection hanging.</li>
+              <li>Reconcile 14 pending order records in the <code>orders</code> table where state is stuck in <code>PENDING</code>.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Customer View -->
+      <div id="pm-customer-box" class="hidden bg-[var(--background)] p-3 rounded-lg border border-[var(--border)] space-y-2 font-sans">
+        <div class="flex items-center justify-between border-b border-[var(--border)] pb-2">
+          <span class="font-bold text-indigo-600 dark:text-indigo-400 text-sm">Customer Incident Advisory &amp; Remediation Guidance</span>
+          <span class="text-[11px] text-[var(--muted-foreground)]">Audience: Acme Corp Technical Leadership</span>
+        </div>
+        <div class="space-y-2 text-xs text-[var(--foreground)] leading-relaxed">
+          <p>
+            <strong>Executive Summary:</strong> On September 22, between 02:14 UTC and 02:26 UTC, Acme Corp experienced elevated API latency and intermittent HTTP 500 errors on the <code>/api/v1/orders</code> endpoint due to temporary backend database connection contention.
+          </p>
+          <div class="bg-[var(--card)] p-2.5 rounded border border-[var(--border)] space-y-1">
+            <div class="font-semibold text-xs text-indigo-500">Service Impact:</div>
+            <div class="text-[11px] text-[var(--muted-foreground)]">
+              Approximately 12 orders failed to complete. Our engineering team has already verified that no duplicate charges occurred and your account data remained fully secure.
+            </div>
+          </div>
+          <div class="space-y-1">
+            <div class="font-semibold text-xs text-[var(--foreground)]">Recommended Client Action:</div>
+            <p class="text-[11px] text-[var(--muted-foreground)]">
+              To enhance client resilience during transient traffic spikes, we recommend configuring your integration client with exponential backoff and jitter for retryable HTTP 500/503 responses, respecting the <code>Retry-After</code> response header.
+            </p>
+          </div>
+          <div class="text-[11px] text-emerald-600 dark:text-emerald-400 font-medium">
+            Status: Fully Resolved. All endpoints are operating within normal SLA parameters (&lt;120ms average response time).
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer: Quick Stats & Mode Indicator -->
+    <div class="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-[var(--border)] text-[11px] text-[var(--muted-foreground)]">
+      <div class="flex items-center gap-2">
+        <span>Pytest: <strong class="text-emerald-500">21/21 Passed</strong></span>
+        <span>•</span>
+        <span>Newman: <strong class="text-emerald-500">22/22 Assertions</strong></span>
+        <span>•</span>
+        <span>Models: <strong class="text-indigo-500">F1 0.9662 / 1.0000</strong></span>
+      </div>
+      <div class="text-[10px] italic">
+        SolutionBridge Portfolio System — Product Solutions Engineering
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // Scenario data dictionary
+    const scenarios = {
+      'A': {
+        reqId: 'REQ-7F8A1B2C',
+        statusBadge: 'HTTP 500 (Simulated)',
+        badgeClass: 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20',
+        desc: 'Injects 5000ms database connection acquisition hang simulating connection pool exhaustion under load.',
+        tier1Status: 'HTTP 500 Internal Server Error',
+        tier1StatusClass: 'text-rose-500 bg-rose-500/10',
+        tier1Latency: '5,002 ms',
+        tier1Body: '{"detail": "Database connection acquisition timeout after 5000ms"}',
+        tier2Flag: 'POOL_SATURATED',
+        tier2FlagClass: 'text-rose-500',
+        tier2Result: 'active_connections: 50/50 (100%) | max_overflow: 0 | lock_waits: 14',
+        logs: [
+          '<span class="text-emerald-500">[INFO]</span> [app.core.middleware] Request received POST /api/v1/orders',
+          '<span class="text-amber-500">[WARN]</span> [app.db.database] DB connection wait > 2000ms',
+          '<span class="text-rose-500 font-semibold">[ERROR] [app.db.database] TimeoutError: QueuePool limit of size 50 reached</span>'
+        ],
+        anomalyScore: '0.96 (Anomaly)',
+        anomalyScoreClass: 'text-rose-500',
+        categoryScore: 'Database (96.0%)',
+        categoryScoreClass: 'text-indigo-500',
+        synthesizedTitle: 'Database Connection Pool Saturation',
+        synthesizedAction: 'Inspect database connection pool utilization; scale pool_size from 50 to 100 or kill dormant transactions.'
+      },
+      'B': {
+        reqId: 'REQ-9C2E4A11',
+        statusBadge: 'HTTP 401 (Simulated)',
+        badgeClass: 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20',
+        desc: 'Simulates corrupted customer API key signature or revoked authorization credential.',
+        tier1Status: 'HTTP 401 Unauthorized',
+        tier1StatusClass: 'text-amber-500 bg-amber-500/10',
+        tier1Latency: '8.4 ms',
+        tier1Body: '{"detail": "Invalid or revoked API key signature"}',
+        tier2Flag: 'AUTH_HASH_MISMATCH',
+        tier2FlagClass: 'text-amber-500',
+        tier2Result: 'customer_id: 2 | key_hash: "3b7a...90e1" | db_status: "INACTIVE"',
+        logs: [
+          '<span class="text-emerald-500">[INFO]</span> [app.core.middleware] Request received POST /api/v1/orders',
+          '<span class="text-rose-500 font-semibold">[ERROR] [app.core.security] HMAC-SHA256 signature verification failed for client</span>',
+          '<span class="text-amber-500">[WARN]</span> [app.api.dependencies] Unauthorized request rejected with 401'
+        ],
+        anomalyScore: '0.12 (Normal)',
+        anomalyScoreClass: 'text-emerald-500',
+        categoryScore: 'Authentication (92.0%)',
+        categoryScoreClass: 'text-amber-500',
+        synthesizedTitle: 'Invalid Customer API Key / Signature',
+        synthesizedAction: 'Verify customer API key validity and active status in portal; advise client to regenerate token.'
+      },
+      'C': {
+        reqId: 'REQ-3B5F8D90',
+        statusBadge: 'HTTP 200 (Degraded)',
+        badgeClass: 'bg-yellow-500/10 text-yellow-600 dark:text-yellow-400 border-yellow-500/20',
+        desc: 'Simulates upstream service latency degradation (2500ms delay) exceeding the 500ms SLA threshold.',
+        tier1Status: 'HTTP 200 OK (SLA Breach)',
+        tier1StatusClass: 'text-yellow-500 bg-yellow-500/10',
+        tier1Latency: '2,514 ms',
+        tier1Body: '{"order_id": 145, "status": "CONFIRMED", "warning": "High upstream delay"}',
+        tier2Flag: 'LATENCY_SLA_BREACH',
+        tier2FlagClass: 'text-yellow-500',
+        tier2Result: 'endpoint_p95_latency: 2,490 ms (Threshold: 500 ms) | requests_sampled: 120',
+        logs: [
+          '<span class="text-emerald-500">[INFO]</span> [app.core.middleware] Request received POST /api/v1/orders',
+          '<span class="text-yellow-500">[WARN]</span> [app.services.orders] Upstream partner inventory check took 2300ms',
+          '<span class="text-emerald-500">[INFO]</span> [app.core.middleware] Request finished with 200 in 2514ms'
+        ],
+        anomalyScore: '0.78 (Anomaly)',
+        anomalyScoreClass: 'text-yellow-500',
+        categoryScore: 'Performance (94.0%)',
+        categoryScoreClass: 'text-yellow-600 dark:text-yellow-400',
+        synthesizedTitle: 'API Response Latency Degradation',
+        synthesizedAction: 'Inspect API vs Database latency breakdown; profile slow query patterns and downstream HTTP callouts.'
+      },
+      'D': {
+        reqId: 'REQ-1E4D7C2B',
+        statusBadge: 'HTTP 503 (Simulated)',
+        badgeClass: 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20',
+        desc: 'Simulates container CPU and memory exhaustion triggering load shedding and gateway rejection.',
+        tier1Status: 'HTTP 503 Service Unavailable',
+        tier1StatusClass: 'text-rose-500 bg-rose-500/10',
+        tier1Latency: '15.2 ms',
+        tier1Body: '{"detail": "Service temporarily saturated; shedding inbound load"}',
+        tier2Flag: 'INFRA_SATURATION',
+        tier2FlagClass: 'text-rose-500',
+        tier2Result: 'cpu_utilization: 94.8% | memory_utilization: 92.1% | queue_depth: 85',
+        logs: [
+          '<span class="text-rose-500 font-semibold">[ERROR] [app.core.middleware] Server load shedding triggered: CPU > 90%</span>',
+          '<span class="text-amber-500">[WARN]</span> [app.services.metrics] Autoscaler target exceeded for 3 consecutive intervals',
+          '<span class="text-rose-500">[ERROR]</span> Returning 503 with Retry-After: 30'
+        ],
+        anomalyScore: '0.99 (Severe Anomaly)',
+        anomalyScoreClass: 'text-rose-500',
+        categoryScore: 'Infrastructure (95.0%)',
+        categoryScoreClass: 'text-rose-500',
+        synthesizedTitle: 'Infrastructure Resource Exhaustion',
+        synthesizedAction: 'Inspect container CPU and memory utilization thresholds; trigger horizontal pod autoscaling.'
+      },
+      'E': {
+        reqId: 'REQ-8A2F5C7D',
+        statusBadge: 'HTTP 201 (Rollback Bug)',
+        badgeClass: 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20',
+        desc: 'Simulates a silent transaction rollback bug: API returns HTTP 201 Created but the database row is rolled back.',
+        tier1Status: 'HTTP 201 Created (False Positive)',
+        tier1StatusClass: 'text-emerald-500 bg-emerald-500/10',
+        tier1Latency: '64.1 ms',
+        tier1Body: '{"order_id": 999, "status": "CONFIRMED", "message": "Order created"}',
+        tier2Flag: 'RECORD_MISSING_AFTER_COMMIT',
+        tier2FlagClass: 'text-rose-500 font-bold',
+        tier2Result: 'validate_order_persistence: 0 rows found for customer_id=1, idempotency_key="idem_e71"',
+        logs: [
+          '<span class="text-emerald-500">[INFO]</span> [app.api.routes.orders] Generated order response payload 201',
+          '<span class="text-rose-500 font-semibold">[ERROR] [app.db.database] DB transaction rolled back due to unhandled post-commit hook</span>',
+          '<span class="text-amber-500">[WARN]</span> [app.services.sql_validation] Data inconsistency detected: missing row'
+        ],
+        anomalyScore: '0.84 (Anomaly)',
+        anomalyScoreClass: 'text-rose-500',
+        categoryScore: 'Data Consistency (94.0%)',
+        categoryScoreClass: 'text-indigo-500',
+        synthesizedTitle: 'Silent Transaction Rollback After HTTP 201',
+        synthesizedAction: 'Reconcile API response against underlying orders table; fix session.commit() order lifecycle in backend handler.'
+      }
+    };
+
+    let currentScenarioKey = 'A';
+
+    function selectScenario(key) {
+      currentScenarioKey = key;
+      const scen = scenarios[key];
+      
+      // Update buttons
+      document.querySelectorAll('.scen-btn').forEach(btn => {
+        btn.className = 'scen-btn px-2.5 py-1.5 rounded border border-[var(--border)] hover:bg-[var(--card)] text-[var(--foreground)] text-left';
+      });
+      const activeBtn = document.getElementById('btn-scen-' + key);
+      if (activeBtn) {
+        activeBtn.className = 'scen-btn px-2.5 py-1.5 rounded border border-indigo-500 bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 font-medium text-left';
+      }
+
+      document.getElementById('scenarioDesc').textContent = scen.desc;
+      document.getElementById('currentRequestId').textContent = scen.reqId;
+      document.getElementById('scenarioStatusBadge').textContent = 'Selected: ' + key;
+    }
+
+    function runDiagnosis() {
+      const scen = scenarios[currentScenarioKey];
+      const runBtn = document.getElementById('runDiagnosisBtn');
+      runBtn.disabled = true;
+      runBtn.innerHTML = '<span>⏳</span> Diagnosing...';
+
+      setTimeout(() => {
+        document.getElementById('currentRequestId').textContent = scen.reqId;
+        
+        // Tier 1
+        const t1 = document.getElementById('tier1Status');
+        t1.textContent = scen.tier1Status;
+        t1.className = 'font-mono font-bold px-1.5 py-0.5 rounded text-[11px] ' + scen.tier1StatusClass;
+        document.getElementById('tier1Latency').textContent = scen.tier1Latency;
+        document.getElementById('tier1Body').textContent = scen.tier1Body;
+
+        // Tier 2
+        const t2 = document.getElementById('tier2Flag');
+        t2.textContent = scen.tier2Flag;
+        t2.className = 'font-mono text-[11px] font-semibold ' + scen.tier2FlagClass;
+        document.getElementById('tier2Result').textContent = scen.tier2Result;
+
+        // Tier 3
+        document.getElementById('tier3Logs').innerHTML = scen.logs.map(l => `<div>${l}</div>`).join('');
+
+        // Tier 4 & 5
+        const anom = document.getElementById('mlAnomalyScore');
+        anom.textContent = scen.anomalyScore;
+        anom.className = 'font-bold text-sm ' + scen.anomalyScoreClass;
+
+        const cat = document.getElementById('mlCategoryScore');
+        cat.textContent = scen.categoryScore;
+        cat.className = 'font-bold text-sm ' + scen.categoryScoreClass;
+
+        // Synthesis
+        document.getElementById('synthesizedTitle').textContent = scen.synthesizedTitle;
+        document.getElementById('synthesizedAction').textContent = 'Recommended Action: ' + scen.synthesizedAction;
+
+        document.getElementById('scenarioStatusBadge').textContent = 'Diagnosed ✓';
+        document.getElementById('scenarioStatusBadge').className = 'text-[11px] px-2 py-0.5 rounded font-mono font-medium bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20';
+
+        runBtn.disabled = false;
+        runBtn.innerHTML = '<span>▶</span> Run Full 5-Tier Diagnosis';
+      }, 350);
+    }
+
+    function switchTab(tabId) {
+      ['triage', 'sql', 'ml', 'postmortem'].forEach(t => {
+        const view = document.getElementById('view-' + t);
+        const tab = document.getElementById('tab-' + t);
+        if (t === tabId) {
+          view.classList.remove('hidden');
+          tab.className = 'pb-2 tab-active transition-colors';
+        } else {
+          view.classList.add('hidden');
+          tab.className = 'pb-2 tab-inactive transition-colors';
+        }
+      });
+    }
+
+    const sqlQueries = {
+      'validate_order_persistence': {
+        code: `SELECT o.id, o.order_number, o.customer_id, o.status, o.total_amount, o.created_at\nFROM orders o\nWHERE o.customer_id = :customer_id AND o.idempotency_key = :idempotency_key;`,
+        result: `[ { "id": 142, "order_number": "ORD-20260921-00142", "customer_id": 1, "status": "CONFIRMED", "total_amount": 2840.50 } ]`,
+        status: `1 row matched in 4.2ms`
+      },
+      'detect_silent_order_rollbacks': {
+        code: `SELECT t.request_id, t.status_code, t.latency_ms, t.created_at\nFROM api_test_runs t\nLEFT JOIN orders o ON o.customer_id = t.customer_id AND o.idempotency_key = t.test_name\nWHERE t.status_code = 201 AND o.id IS NULL;`,
+        result: `[ { "request_id": "REQ-8A2F5C7D", "status_code": 201, "latency_ms": 64.1, "issue": "Missing order record" } ]`,
+        status: `Anomaly Detected: 1 unpersisted 201 transaction found in 8.1ms`
+      },
+      'check_duplicate_orders': {
+        code: `SELECT idempotency_key, COUNT(*) as duplicate_count\nFROM orders\nWHERE customer_id = :customer_id\nGROUP BY idempotency_key\nHAVING COUNT(*) > 1;`,
+        result: `[ { "idempotency_key": "idem_duplicate_test_44", "duplicate_count": 2 } ]`,
+        status: `1 duplicate idempotency key flagged in 6.0ms`
+      },
+      'inspect_endpoint_latency_stats': {
+        code: `SELECT endpoint, MIN(latency_ms) as min_lat, AVG(latency_ms) as avg_lat, MAX(latency_ms) as max_lat\nFROM api_test_runs\nWHERE created_at >= NOW() - INTERVAL 1 HOUR\nGROUP BY endpoint;`,
+        result: `[ { "endpoint": "/api/v1/orders", "min_lat": 38.2, "avg_lat": 184.5, "max_lat": 5002.0 } ]`,
+        status: `4 endpoint SLA aggregations returned in 5.1ms`
+      },
+      'aggregate_error_codes_by_request': {
+        code: `SELECT status_code, COUNT(*) as count\nFROM api_test_runs\nWHERE status_code >= 400\nGROUP BY status_code;`,
+        result: `[ { "status_code": 500, "count": 14 }, { "status_code": 401, "count": 6 }, { "status_code": 503, "count": 8 } ]`,
+        status: `3 error code groups returned in 3.9ms`
+      },
+      'check_customer_failure_rate': {
+        code: `SELECT customer_id, \n       ROUND(SUM(CASE WHEN status_code >= 400 THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 2) as failure_rate\nFROM api_test_runs\nGROUP BY customer_id;`,
+        result: `[ { "customer_id": 1, "failure_rate": 2.45 }, { "customer_id": 2, "failure_rate": 8.12 } ]`,
+        status: `2 customer rates calculated in 4.7ms`
+      },
+      'detect_status_mismatches': {
+        code: `SELECT o.id, o.order_number, o.status as order_status, t.status_code\nFROM orders o\nJOIN api_test_runs t ON t.customer_id = o.customer_id\nWHERE (t.status_code = 200 AND o.status = 'FAILED') OR (t.status_code >= 400 AND o.status = 'CONFIRMED');`,
+        result: `[ { "id": 89, "order_number": "ORD-20260921-00089", "order_status": "FAILED", "status_code": 200 } ]`,
+        status: `1 state mismatch found in 6.4ms`
+      },
+      'inspect_db_contention_metrics': {
+        code: `SELECT active_db_connections, queue_depth, lock_contention_flag, recorded_at\nFROM system_metrics\nORDER BY recorded_at DESC\nLIMIT 5;`,
+        result: `[ { "active_db_connections": 50, "queue_depth": 14, "lock_contention_flag": 1 } ]`,
+        status: `Contention detected in latest telemetry snapshot`
+      },
+      'find_unhandled_exceptions': {
+        code: `SELECT id, request_id, component, message, stack_trace, timestamp\nFROM logs\nWHERE level = 'ERROR' AND stack_trace IS NOT NULL\nORDER BY timestamp DESC\nLIMIT 5;`,
+        result: `[ { "request_id": "REQ-7F8A1B2C", "component": "app.db.database", "message": "QueuePool limit of size 50 reached" } ]`,
+        status: `Recent stack traces retrieved in 4.1ms`
+      },
+      'inspect_customer_integration_health': {
+        code: `SELECT c.name, c.tier, COUNT(t.id) as total_calls, AVG(t.latency_ms) as avg_latency\nFROM customers c\nLEFT JOIN api_test_runs t ON t.customer_id = c.id\nGROUP BY c.id;`,
+        result: `[ { "name": "Acme Corp", "tier": "Enterprise", "total_calls": 840, "avg_latency": 112.4 } ]`,
+        status: `Customer health scores compiled in 5.8ms`
+      },
+      'get_top_failing_endpoints': {
+        code: `SELECT endpoint, COUNT(*) as failure_count\nFROM api_test_runs\nWHERE status_code >= 400\nGROUP BY endpoint\nORDER BY failure_count DESC\nLIMIT 5;`,
+        result: `[ { "endpoint": "/api/v1/orders", "failure_count": 28 }, { "endpoint": "/api/v1/auth/token", "failure_count": 6 } ]`,
+        status: `Top failing endpoints ranked in 3.2ms`
+      }
+    };
+
+    let activeSqlKey = 'validate_order_persistence';
+
+    function loadSqlQuery(key) {
+      activeSqlKey = key;
+      const q = sqlQueries[key];
+      document.getElementById('selectedQueryName').textContent = key;
+      document.getElementById('selectedQueryCode').textContent = q.code;
+      document.getElementById('sqlExecutionStatus').textContent = 'Ready to execute parameterized query';
+      document.getElementById('sqlExecutionStatus').className = 'text-[var(--muted-foreground)] font-mono';
+      document.getElementById('sqlResultBox').textContent = 'Click "Execute Parameterized Query" to run...';
+      document.getElementById('sqlResultBox').className = 'bg-[var(--card)] p-2 rounded border border-[var(--border)] font-mono text-[10.5px] text-[var(--muted-foreground)] overflow-x-auto';
+    }
+
+    function executeSelectedQuery() {
+      const q = sqlQueries[activeSqlKey];
+      document.getElementById('sqlExecutionStatus').textContent = q.status;
+      document.getElementById('sqlExecutionStatus').className = 'text-emerald-500 font-bold font-mono';
+      document.getElementById('sqlResultBox').textContent = q.result;
+      document.getElementById('sqlResultBox').className = 'bg-[var(--card)] p-2 rounded border border-[var(--border)] font-mono text-[10.5px] text-emerald-600 dark:text-emerald-400 overflow-x-auto';
+    }
+
+    function togglePostmortemView(view) {
+      const engBox = document.getElementById('pm-engineer-box');
+      const custBox = document.getElementById('pm-customer-box');
+      const engBtn = document.getElementById('btn-pm-eng');
+      const custBtn = document.getElementById('btn-pm-cust');
+
+      if (view === 'engineer') {
+        engBox.classList.remove('hidden');
+        custBox.classList.add('hidden');
+        engBtn.className = 'px-2 py-1 rounded bg-indigo-600 text-white font-semibold text-[11px]';
+        custBtn.className = 'px-2 py-1 rounded bg-[var(--background)] hover:bg-[var(--card)] border border-[var(--border)] text-[var(--foreground)] font-semibold text-[11px]';
+      } else {
+        engBox.classList.add('hidden');
+        custBox.classList.remove('hidden');
+        engBtn.className = 'px-2 py-1 rounded bg-[var(--background)] hover:bg-[var(--card)] border border-[var(--border)] text-[var(--foreground)] font-semibold text-[11px]';
+        custBtn.className = 'px-2 py-1 rounded bg-indigo-600 text-white font-semibold text-[11px]';
+      }
+    }
+  </script>
+</body>
+</html>
