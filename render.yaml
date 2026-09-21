@@ -1,0 +1,28 @@
+services:
+  # FastAPI Backend Service
+  - type: web
+    name: solutionbridge-api
+    runtime: python
+    buildCommand: "pip install -r requirements.txt && python ml/train_anomaly_model.py && python ml/train_incident_classifier.py && python ml/build_embeddings.py && python scripts/seed_database.py"
+    startCommand: "uvicorn app.main:app --host 0.0.0.0 --port $PORT"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: DATABASE_URL
+        value: "sqlite:///./solutionbridge.db"
+      - key: ENVIRONMENT
+        value: "production"
+
+  # Streamlit PSE Dashboard Service
+  - type: web
+    name: solutionbridge-dashboard
+    runtime: python
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "streamlit run dashboard/app.py --server.port $PORT --server.address 0.0.0.0"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: DATABASE_URL
+        value: "sqlite:///./solutionbridge.db"
+      - key: ENVIRONMENT
+        value: "production"
