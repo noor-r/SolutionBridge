@@ -1,0 +1,133 @@
+{
+  "timestamp": "2026-09-21T20:48:26.937117+00:00",
+  "customer_id": 1,
+  "total_tests": 11,
+  "passed": 11,
+  "failed": 0,
+  "errors": 0,
+  "pass_rate_percent": 100.0,
+  "avg_response_time_ms": 9.84,
+  "test_results": [
+    {
+      "endpoint_id": 1,
+      "name": "Health Check",
+      "method": "GET",
+      "endpoint": "/health",
+      "request_id": "REQ-E03D366D",
+      "status_code": 200,
+      "response_time_ms": 25.72,
+      "test_status": "PASSED",
+      "error_message": null
+    },
+    {
+      "endpoint_id": 2,
+      "name": "Readiness Probe",
+      "method": "GET",
+      "endpoint": "/ready",
+      "request_id": "REQ-674EBB54",
+      "status_code": 200,
+      "response_time_ms": 5.29,
+      "test_status": "PASSED",
+      "error_message": null
+    },
+    {
+      "endpoint_id": 3,
+      "name": "List Customers",
+      "method": "GET",
+      "endpoint": "/api/v1/customers",
+      "request_id": "REQ-0684BD9C",
+      "status_code": 200,
+      "response_time_ms": 5.4,
+      "test_status": "PASSED",
+      "error_message": null
+    },
+    {
+      "endpoint_id": 4,
+      "name": "Get Customer",
+      "method": "GET",
+      "endpoint": "/api/v1/customers/1",
+      "request_id": "REQ-E927C9A7",
+      "status_code": 200,
+      "response_time_ms": 6.4,
+      "test_status": "PASSED",
+      "error_message": null
+    },
+    {
+      "endpoint_id": 5,
+      "name": "List Products",
+      "method": "GET",
+      "endpoint": "/api/v1/products",
+      "request_id": "REQ-53C22126",
+      "status_code": 200,
+      "response_time_ms": 5.01,
+      "test_status": "PASSED",
+      "error_message": null
+    },
+    {
+      "endpoint_id": 6,
+      "name": "Get Product",
+      "method": "GET",
+      "endpoint": "/api/v1/products/1",
+      "request_id": "REQ-80A4D552",
+      "status_code": 200,
+      "response_time_ms": 7.98,
+      "test_status": "PASSED",
+      "error_message": null
+    },
+    {
+      "endpoint_id": 7,
+      "name": "Create Order",
+      "method": "POST",
+      "endpoint": "/api/v1/orders",
+      "request_id": "REQ-3BEE7D9A",
+      "status_code": 201,
+      "response_time_ms": 13.42,
+      "test_status": "PASSED",
+      "error_message": null
+    },
+    {
+      "endpoint_id": 8,
+      "name": "Get Order",
+      "method": "GET",
+      "endpoint": "/api/v1/orders/1",
+      "request_id": "REQ-E9B51B98",
+      "status_code": 200,
+      "response_time_ms": 5.36,
+      "test_status": "PASSED",
+      "error_message": null
+    },
+    {
+      "endpoint_id": 9,
+      "name": "Customer Orders",
+      "method": "GET",
+      "endpoint": "/api/v1/customers/1/orders",
+      "request_id": "REQ-519BA63C",
+      "status_code": 200,
+      "response_time_ms": 9.0,
+      "test_status": "PASSED",
+      "error_message": null
+    },
+    {
+      "endpoint_id": 10,
+      "name": "System Metrics",
+      "method": "GET",
+      "endpoint": "/api/v1/metrics",
+      "request_id": "REQ-94E6D5E3",
+      "status_code": 200,
+      "response_time_ms": 7.34,
+      "test_status": "PASSED",
+      "error_message": null
+    },
+    {
+      "endpoint_id": 11,
+      "name": "Log Explorer",
+      "method": "GET",
+      "endpoint": "/api/v1/logs",
+      "request_id": "REQ-258ECF10",
+      "status_code": 200,
+      "response_time_ms": 17.36,
+      "test_status": "PASSED",
+      "error_message": null
+    }
+  ]
+}

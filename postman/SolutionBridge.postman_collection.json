@@ -1,0 +1,406 @@
+{
+  "info": {
+    "name": "SolutionBridge API Integration & Troubleshooting Suite",
+    "description": "Comprehensive Postman test collection for SolutionBridge platform. Tests positive flows, authentication rejection, schema validation, SLA latencies, failure simulation, and root-cause analysis.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "01 - Health & Observability",
+      "item": [
+        {
+          "name": "Health Check Probe",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200 OK', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Response contains healthy status', function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.status).to.eql('healthy');",
+                  "    pm.expect(json.service).to.eql('SolutionBridge');",
+                  "});",
+                  "pm.test('Response time SLA is under 200ms', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/health",
+              "host": ["{{base_url}}"],
+              "path": ["health"]
+            }
+          }
+        },
+        {
+          "name": "Readiness Probe",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200 OK', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Database connection is active', function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.status).to.eql('ready');",
+                  "    pm.expect(json.database_connected).to.be.true;",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/ready",
+              "host": ["{{base_url}}"],
+              "path": ["ready"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "02 - Authentication",
+      "item": [
+        {
+          "name": "Valid Customer Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200 OK', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Returns authenticated session and masked API key', function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.status).to.eql('authenticated');",
+                  "    pm.expect(json.customer_id).to.eql(1);",
+                  "    pm.expect(json.masked_api_key).to.include('***');",
+                  "    pm.expect(json.session_token).to.be.a('string');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_id\": 1,\n  \"api_key\": \"{{api_key}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Invalid Customer Login Rejection",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 401 Unauthorized', function () {",
+                  "    pm.response.to.have.status(401);",
+                  "});",
+                  "pm.test('Error header contains AUTH_INVALID code', function () {",
+                  "    pm.expect(pm.response.headers.get('X-Error-Code')).to.eql('AUTH_INVALID');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_id\": 1,\n  \"api_key\": \"{{invalid_api_key}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "auth", "login"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "03 - Customers & Products",
+      "item": [
+        {
+          "name": "List Customers (Masked Credentials)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200 OK', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('All returned credentials are masked', function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json).to.be.an('array');",
+                  "    pm.expect(json.length).to.be.at.least(3);",
+                  "    json.forEach(function(cust) {",
+                  "        pm.expect(cust.masked_api_key).to.include('***');",
+                  "    });",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/customers",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "customers"]
+            }
+          }
+        },
+        {
+          "name": "List Products Catalog",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200 OK', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Returns products array with SKU and price', function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json).to.be.an('array');",
+                  "    pm.expect(json.length).to.be.at.least(5);",
+                  "    pm.expect(json[0]).to.have.property('sku');",
+                  "    pm.expect(json[0]).to.have.property('price');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/products",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "products"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "04 - Orders & Validation",
+      "item": [
+        {
+          "name": "Create Order - Success",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 201 Created', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "pm.test('Response has Request-ID and Response-Time-MS headers', function () {",
+                  "    pm.expect(pm.response.headers.has('X-Request-ID')).to.be.true;",
+                  "    pm.expect(pm.response.headers.has('X-Response-Time-MS')).to.be.true;",
+                  "});",
+                  "pm.test('Order is created with COMPLETED status', function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.status).to.eql('COMPLETED');",
+                  "    pm.expect(json.customer_id).to.eql(1);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "X-API-Key", "value": "{{api_key}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_id\": 1,\n  \"external_order_id\": \"NEWMAN-ORD-{{$randomInt}}\",\n  \"amount\": 149.99\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/orders",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "orders"]
+            }
+          }
+        },
+        {
+          "name": "Create Order - Schema Validation Failure",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 422 Unprocessable Entity', function () {",
+                  "    pm.response.to.have.status(422);",
+                  "});",
+                  "pm.test('Validation error detail is returned', function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json).to.have.property('detail');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "X-API-Key", "value": "{{api_key}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_id\": 1,\n  \"external_order_id\": \"INVALID-SCHEMA-ORD\",\n  \"amount\": -99.00\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/orders",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "orders"]
+            }
+          }
+        },
+        {
+          "name": "Get Non-Existent Order (404 Test)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 404 Not Found', function () {",
+                  "    pm.response.to.have.status(404);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/orders/9999999",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "orders", "9999999"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "05 - Failure Simulation & Root-Cause",
+      "item": [
+        {
+          "name": "Trigger Scenario: Database Timeout",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Scenario triggered successfully', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.scenario).to.eql('database_timeout');",
+                  "    pm.expect(json.http_status).to.eql(500);",
+                  "    pm.expect(json.error_code).to.eql('DB_TIMEOUT');",
+                  "    pm.environment.set('last_sim_request_id', json.request_id);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"scenario\": \"database_timeout\",\n  \"customer_id\": 1\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/demo/scenario",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "demo", "scenario"]
+            }
+          }
+        },
+        {
+          "name": "Analyze Simulated Request Incident",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Investigation analysis completed 200 OK', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Returns combined multi-source evidence', function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.category).to.eql('Database');",
+                  "    pm.expect(json.deterministic_evidence).to.be.an('array');",
+                  "    pm.expect(json.ml_evidence).to.be.an('object');",
+                  "    pm.expect(json.similar_incidents).to.be.an('array');",
+                  "    pm.expect(json.engineer_summary).to.include('TECHNICAL POSTMORTEM');",
+                  "    pm.expect(json.customer_summary).to.include('Dear Customer');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/incidents/analyze/{{last_sim_request_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "incidents", "analyze", "{{last_sim_request_id}}"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

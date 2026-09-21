@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SolutionBridge — API Integration Test Report</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; margin: 40px; background: #0f172a; color: #f8fafc; }
+        .card { background: #1e293b; border-radius: 8px; padding: 24px; margin-bottom: 24px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.3); }
+        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; padding-bottom: 16px; }
+        .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin: 24px 0; }
+        .kpi { background: #0f172a; padding: 16px; border-radius: 6px; border-left: 4px solid #3b82f6; }
+        .kpi h3 { margin: 0; font-size: 13px; color: #94a3b8; text-transform: uppercase; }
+        .kpi p { margin: 8px 0 0 0; font-size: 28px; font-weight: bold; color: #f8fafc; }
+        table { width: 100%; border-collapse: collapse; margin-top: 16px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #334155; }
+        th { background: #0f172a; color: #94a3b8; font-size: 12px; text-transform: uppercase; }
+        code { background: #334155; padding: 2px 6px; border-radius: 4px; font-size: 12px; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="header">
+            <div>
+                <h1 style="margin:0; font-size: 24px;">SolutionBridge API Integration Report</h1>
+                <p style="margin:4px 0 0 0; color: #94a3b8;">Automated Product Solutions Engineering Test Run</p>
+            </div>
+            <div>
+                <span style="color: #94a3b8; font-size: 13px;">Generated at: 2026-09-21T20:48:26.937117+00:00</span>
+            </div>
+        </div>
+
+        <div class="kpi-grid">
+            <div class="kpi" style="border-left-color: #3b82f6;">
+                <h3>Total Endpoints Tested</h3>
+                <p>11</p>
+            </div>
+            <div class="kpi" style="border-left-color: #22c55e;">
+                <h3>Pass Rate</h3>
+                <p>100.0%</p>
+            </div>
+            <div class="kpi" style="border-left-color: #ef4444;">
+                <h3>Failed Endpoints</h3>
+                <p>0</p>
+            </div>
+            <div class="kpi" style="border-left-color: #eab308;">
+                <h3>Average Response Time</h3>
+                <p>9.84 ms</p>
+            </div>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Test Name</th>
+                    <th>Endpoint</th>
+                    <th>Request ID</th>
+                    <th>Status</th>
+                    <th>Latency</th>
+                    <th>Result</th>
+                    <th>Diagnostics / Error</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+            <tr>
+                <td>Health Check</td>
+                <td><code>GET /health</code></td>
+                <td><code>REQ-E03D366D</code></td>
+                <td>200</td>
+                <td>25.72 ms</td>
+                <td><span style="background-color: #22c55e; color: white; padding: 4px 8px; border-radius: 4px; font-weight: bold;">PASSED</span></td>
+                <td style="color: #ef4444;">-</td>
+            </tr>
+            
+            <tr>
+                <td>Readiness Probe</td>
+                <td><code>GET /ready</code></td>
+                <td><code>REQ-674EBB54</code></td>
+                <td>200</td>
+                <td>5.29 ms</td>
+                <td><span style="background-color: #22c55e; color: white; padding: 4px 8px; border-radius: 4px; font-weight: bold;">PASSED</span></td>
+                <td style="color: #ef4444;">-</td>
+            </tr>
+            
+            <tr>
+                <td>List Customers</td>
+                <td><code>GET /api/v1/customers</code></td>
+                <td><code>REQ-0684BD9C</code></td>
+                <td>200</td>
+                <td>5.4 ms</td>
+                <td><span style="background-color: #22c55e; color: white; padding: 4px 8px; border-radius: 4px; font-weight: bold;">PASSED</span></td>
+                <td style="color: #ef4444;">-</td>
+            </tr>
+            
+            <tr>
+                <td>Get Customer</td>
+                <td><code>GET /api/v1/customers/1</code></td>
+                <td><code>REQ-E927C9A7</code></td>
+                <td>200</td>
+                <td>6.4 ms</td>
+                <td><span style="background-color: #22c55e; color: white; padding: 4px 8px; border-radius: 4px; font-weight: bold;">PASSED</span></td>
+                <td style="color: #ef4444;">-</td>
+            </tr>
+            
+            <tr>
+                <td>List Products</td>
+                <td><code>GET /api/v1/products</code></td>
+                <td><code>REQ-53C22126</code></td>
+                <td>200</td>
+                <td>5.01 ms</td>
+                <td><span style="background-color: #22c55e; color: white; padding: 4px 8px; border-radius: 4px; font-weight: bold;">PASSED</span></td>
+                <td style="color: #ef4444;">-</td>
+            </tr>
+            
+            <tr>
+                <td>Get Product</td>
+                <td><code>GET /api/v1/products/1</code></td>
+                <td><code>REQ-80A4D552</code></td>
+                <td>200</td>
+                <td>7.98 ms</td>
+                <td><span style="background-color: #22c55e; color: white; padding: 4px 8px; border-radius: 4px; font-weight: bold;">PASSED</span></td>
+                <td style="color: #ef4444;">-</td>
+            </tr>
+            
+            <tr>
+                <td>Create Order</td>
+                <td><code>POST /api/v1/orders</code></td>
+                <td><code>REQ-3BEE7D9A</code></td>
+                <td>201</td>
+                <td>13.42 ms</td>
+                <td><span style="background-color: #22c55e; color: white; padding: 4px 8px; border-radius: 4px; font-weight: bold;">PASSED</span></td>
+                <td style="color: #ef4444;">-</td>
+            </tr>
+            
+            <tr>
+                <td>Get Order</td>
+                <td><code>GET /api/v1/orders/1</code></td>
+                <td><code>REQ-E9B51B98</code></td>
+                <td>200</td>
+                <td>5.36 ms</td>
+                <td><span style="background-color: #22c55e; color: white; padding: 4px 8px; border-radius: 4px; font-weight: bold;">PASSED</span></td>
+                <td style="color: #ef4444;">-</td>
+            </tr>
+            
+            <tr>
+                <td>Customer Orders</td>
+                <td><code>GET /api/v1/customers/1/orders</code></td>
+                <td><code>REQ-519BA63C</code></td>
+                <td>200</td>
+                <td>9.0 ms</td>
+                <td><span style="background-color: #22c55e; color: white; padding: 4px 8px; border-radius: 4px; font-weight: bold;">PASSED</span></td>
+                <td style="color: #ef4444;">-</td>
+            </tr>
+            
+            <tr>
+                <td>System Metrics</td>
+                <td><code>GET /api/v1/metrics</code></td>
+                <td><code>REQ-94E6D5E3</code></td>
+                <td>200</td>
+                <td>7.34 ms</td>
+                <td><span style="background-color: #22c55e; color: white; padding: 4px 8px; border-radius: 4px; font-weight: bold;">PASSED</span></td>
+                <td style="color: #ef4444;">-</td>
+            </tr>
+            
+            <tr>
+                <td>Log Explorer</td>
+                <td><code>GET /api/v1/logs</code></td>
+                <td><code>REQ-258ECF10</code></td>
+                <td>200</td>
+                <td>17.36 ms</td>
+                <td><span style="background-color: #22c55e; color: white; padding: 4px 8px; border-radius: 4px; font-weight: bold;">PASSED</span></td>
+                <td style="color: #ef4444;">-</td>
+            </tr>
+            
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

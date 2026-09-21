@@ -1,0 +1,70 @@
+services:
+  # MySQL 8.0 Primary Production Database
+  mysql:
+    image: mysql:8.0
+    container_name: solutionbridge-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: solutionbridge
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-prootpassword"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+  # FastAPI Backend Service
+  backend:
+    build: .
+    container_name: solutionbridge-backend
+    restart: unless-stopped
+    command: >
+      bash -c "
+        python -m alembic upgrade head &&
+        python scripts/seed_database.py &&
+        python -m ml.train_anomaly_model &&
+        python -m ml.train_incident_classifier &&
+        python -m ml.build_embeddings &&
+        uvicorn app.main:app --host 0.0.0.0 --port 8000
+      "
+    environment:
+      DATABASE_URL: mysql+pymysql://root:rootpassword@mysql:3306/solutionbridge
+      BACKEND_API_URL: http://127.0.0.1:8000
+      APP_ENV: production
+      LOG_LEVEL: INFO
+    ports:
+      - "8000:8000"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    volumes:
+      - ./logs:/app/logs
+      - ./reports:/app/reports
+      - ./ml/artifacts:/app/ml/artifacts
+
+  # Streamlit Operations Dashboard
+  dashboard:
+    build: .
+    container_name: solutionbridge-dashboard
+    restart: unless-stopped
+    command: streamlit run dashboard/app.py --server.port 8501 --server.address 0.0.0.0
+    environment:
+      DATABASE_URL: mysql+pymysql://root:rootpassword@mysql:3306/solutionbridge
+      BACKEND_API_URL: http://backend:8000
+    ports:
+      - "8501:8501"
+    depends_on:
+      - backend
+    volumes:
+      - ./logs:/app/logs
+      - ./reports:/app/reports
+      - ./ml/artifacts:/app/ml/artifacts
+
+volumes:
+  mysql_data:
+    driver: local

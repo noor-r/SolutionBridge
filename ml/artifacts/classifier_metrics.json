@@ -1,0 +1,101 @@
+{
+  "primary_model": "TF-IDF + Logistic Regression",
+  "classes": [
+    "Authentication",
+    "Database",
+    "Application",
+    "Infrastructure",
+    "Integration",
+    "Performance",
+    "Data Consistency"
+  ],
+  "dataset_sizes": {
+    "train": 980,
+    "validation": 210,
+    "test": 210
+  },
+  "test_metrics": {
+    "accuracy": 1.0,
+    "precision_weighted": 1.0,
+    "recall_weighted": 1.0,
+    "f1_weighted": 1.0,
+    "confusion_matrix": [
+      [
+        30,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        30,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        30,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        30,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        30,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        30,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        30
+      ]
+    ],
+    "per_class_f1": {
+      "Authentication": 1.0,
+      "Database": 1.0,
+      "Application": 1.0,
+      "Infrastructure": 1.0,
+      "Integration": 1.0,
+      "Performance": 1.0,
+      "Data Consistency": 1.0
+    }
+  },
+  "comparison_metrics": {
+    "random_forest_accuracy": 1.0,
+    "random_forest_f1_weighted": 1.0
+  }
+}

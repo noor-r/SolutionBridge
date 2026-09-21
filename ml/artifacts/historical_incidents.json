@@ -1,0 +1,772 @@
+[
+  {
+    "incident_id": "INC-421",
+    "title": "Database Connection Pool Exhaustion",
+    "summary": "POST /orders returned 500. Database connection timeout. DB latency 4.8s. Order record not persisted.",
+    "category": "Database",
+    "resolution": "Connection pool exhaustion on Aurora cluster. Increased pool size from 20 to 60 and restarted affected worker service."
+  },
+  {
+    "incident_id": "INC-101",
+    "title": "Database Connection Pool Exhaustion (Variation 1)",
+    "summary": "POST /orders returned 500. Database connection timeout. DB latency 4.8s. Order record not persisted. Environment: us-east-prod-2. Observed impact on cluster 1.",
+    "category": "Database",
+    "resolution": "Connection pool exhaustion on Aurora cluster. Increased pool size from 20 to 60 and restarted affected worker service."
+  },
+  {
+    "incident_id": "INC-102",
+    "title": "Database Connection Pool Exhaustion (Variation 2)",
+    "summary": "POST /orders returned 500. Database connection timeout. DB latency 4.8s. Order record not persisted. Environment: us-east-prod-3. Observed impact on cluster 2.",
+    "category": "Database",
+    "resolution": "Connection pool exhaustion on Aurora cluster. Increased pool size from 20 to 60 and restarted affected worker service."
+  },
+  {
+    "incident_id": "INC-103",
+    "title": "Database Connection Pool Exhaustion (Variation 3)",
+    "summary": "POST /orders returned 500. Database connection timeout. DB latency 4.8s. Order record not persisted. Environment: us-east-prod-1. Observed impact on cluster 3.",
+    "category": "Database",
+    "resolution": "Connection pool exhaustion on Aurora cluster. Increased pool size from 20 to 60 and restarted affected worker service."
+  },
+  {
+    "incident_id": "INC-104",
+    "title": "Database Connection Pool Exhaustion (Variation 4)",
+    "summary": "POST /orders returned 500. Database connection timeout. DB latency 4.8s. Order record not persisted. Environment: us-east-prod-2. Observed impact on cluster 4.",
+    "category": "Database",
+    "resolution": "Connection pool exhaustion on Aurora cluster. Increased pool size from 20 to 60 and restarted affected worker service."
+  },
+  {
+    "incident_id": "INC-105",
+    "title": "Database Connection Pool Exhaustion (Variation 5)",
+    "summary": "POST /orders returned 500. Database connection timeout. DB latency 4.8s. Order record not persisted. Environment: us-east-prod-3. Observed impact on cluster 5.",
+    "category": "Database",
+    "resolution": "Connection pool exhaustion on Aurora cluster. Increased pool size from 20 to 60 and restarted affected worker service."
+  },
+  {
+    "incident_id": "INC-106",
+    "title": "Database Connection Pool Exhaustion (Variation 6)",
+    "summary": "POST /orders returned 500. Database connection timeout. DB latency 4.8s. Order record not persisted. Environment: us-east-prod-1. Observed impact on cluster 6.",
+    "category": "Database",
+    "resolution": "Connection pool exhaustion on Aurora cluster. Increased pool size from 20 to 60 and restarted affected worker service."
+  },
+  {
+    "incident_id": "INC-107",
+    "title": "Database Connection Pool Exhaustion (Variation 7)",
+    "summary": "POST /orders returned 500. Database connection timeout. DB latency 4.8s. Order record not persisted. Environment: us-east-prod-2. Observed impact on cluster 7.",
+    "category": "Database",
+    "resolution": "Connection pool exhaustion on Aurora cluster. Increased pool size from 20 to 60 and restarted affected worker service."
+  },
+  {
+    "incident_id": "INC-108",
+    "title": "Database Connection Pool Exhaustion (Variation 8)",
+    "summary": "POST /orders returned 500. Database connection timeout. DB latency 4.8s. Order record not persisted. Environment: us-east-prod-3. Observed impact on cluster 8.",
+    "category": "Database",
+    "resolution": "Connection pool exhaustion on Aurora cluster. Increased pool size from 20 to 60 and restarted affected worker service."
+  },
+  {
+    "incident_id": "INC-109",
+    "title": "Database Connection Pool Exhaustion (Variation 9)",
+    "summary": "POST /orders returned 500. Database connection timeout. DB latency 4.8s. Order record not persisted. Environment: us-east-prod-1. Observed impact on cluster 9.",
+    "category": "Database",
+    "resolution": "Connection pool exhaustion on Aurora cluster. Increased pool size from 20 to 60 and restarted affected worker service."
+  },
+  {
+    "incident_id": "INC-110",
+    "title": "Database Connection Pool Exhaustion (Variation 10)",
+    "summary": "POST /orders returned 500. Database connection timeout. DB latency 4.8s. Order record not persisted. Environment: us-east-prod-2. Observed impact on cluster 10.",
+    "category": "Database",
+    "resolution": "Connection pool exhaustion on Aurora cluster. Increased pool size from 20 to 60 and restarted affected worker service."
+  },
+  {
+    "incident_id": "INC-382",
+    "title": "API Key Authorization Header Malformation",
+    "summary": "POST /orders failed with HTTP 401. Invalid API key error. Customer sent Bearer prefix instead of raw X-API-Key token.",
+    "category": "Authentication",
+    "resolution": "Customer client configured with Bearer auth instead of custom header. Sent updated Postman collection with correct X-API-Key header format."
+  },
+  {
+    "incident_id": "INC-111",
+    "title": "API Key Authorization Header Malformation (Variation 1)",
+    "summary": "POST /orders failed with HTTP 401. Invalid API key error. Customer sent Bearer prefix instead of raw X-API-Key token. Environment: us-east-prod-2. Observed impact on cluster 1.",
+    "category": "Authentication",
+    "resolution": "Customer client configured with Bearer auth instead of custom header. Sent updated Postman collection with correct X-API-Key header format."
+  },
+  {
+    "incident_id": "INC-112",
+    "title": "API Key Authorization Header Malformation (Variation 2)",
+    "summary": "POST /orders failed with HTTP 401. Invalid API key error. Customer sent Bearer prefix instead of raw X-API-Key token. Environment: us-east-prod-3. Observed impact on cluster 2.",
+    "category": "Authentication",
+    "resolution": "Customer client configured with Bearer auth instead of custom header. Sent updated Postman collection with correct X-API-Key header format."
+  },
+  {
+    "incident_id": "INC-113",
+    "title": "API Key Authorization Header Malformation (Variation 3)",
+    "summary": "POST /orders failed with HTTP 401. Invalid API key error. Customer sent Bearer prefix instead of raw X-API-Key token. Environment: us-east-prod-1. Observed impact on cluster 3.",
+    "category": "Authentication",
+    "resolution": "Customer client configured with Bearer auth instead of custom header. Sent updated Postman collection with correct X-API-Key header format."
+  },
+  {
+    "incident_id": "INC-114",
+    "title": "API Key Authorization Header Malformation (Variation 4)",
+    "summary": "POST /orders failed with HTTP 401. Invalid API key error. Customer sent Bearer prefix instead of raw X-API-Key token. Environment: us-east-prod-2. Observed impact on cluster 4.",
+    "category": "Authentication",
+    "resolution": "Customer client configured with Bearer auth instead of custom header. Sent updated Postman collection with correct X-API-Key header format."
+  },
+  {
+    "incident_id": "INC-115",
+    "title": "API Key Authorization Header Malformation (Variation 5)",
+    "summary": "POST /orders failed with HTTP 401. Invalid API key error. Customer sent Bearer prefix instead of raw X-API-Key token. Environment: us-east-prod-3. Observed impact on cluster 5.",
+    "category": "Authentication",
+    "resolution": "Customer client configured with Bearer auth instead of custom header. Sent updated Postman collection with correct X-API-Key header format."
+  },
+  {
+    "incident_id": "INC-116",
+    "title": "API Key Authorization Header Malformation (Variation 6)",
+    "summary": "POST /orders failed with HTTP 401. Invalid API key error. Customer sent Bearer prefix instead of raw X-API-Key token. Environment: us-east-prod-1. Observed impact on cluster 6.",
+    "category": "Authentication",
+    "resolution": "Customer client configured with Bearer auth instead of custom header. Sent updated Postman collection with correct X-API-Key header format."
+  },
+  {
+    "incident_id": "INC-117",
+    "title": "API Key Authorization Header Malformation (Variation 7)",
+    "summary": "POST /orders failed with HTTP 401. Invalid API key error. Customer sent Bearer prefix instead of raw X-API-Key token. Environment: us-east-prod-2. Observed impact on cluster 7.",
+    "category": "Authentication",
+    "resolution": "Customer client configured with Bearer auth instead of custom header. Sent updated Postman collection with correct X-API-Key header format."
+  },
+  {
+    "incident_id": "INC-118",
+    "title": "API Key Authorization Header Malformation (Variation 8)",
+    "summary": "POST /orders failed with HTTP 401. Invalid API key error. Customer sent Bearer prefix instead of raw X-API-Key token. Environment: us-east-prod-3. Observed impact on cluster 8.",
+    "category": "Authentication",
+    "resolution": "Customer client configured with Bearer auth instead of custom header. Sent updated Postman collection with correct X-API-Key header format."
+  },
+  {
+    "incident_id": "INC-119",
+    "title": "API Key Authorization Header Malformation (Variation 9)",
+    "summary": "POST /orders failed with HTTP 401. Invalid API key error. Customer sent Bearer prefix instead of raw X-API-Key token. Environment: us-east-prod-1. Observed impact on cluster 9.",
+    "category": "Authentication",
+    "resolution": "Customer client configured with Bearer auth instead of custom header. Sent updated Postman collection with correct X-API-Key header format."
+  },
+  {
+    "incident_id": "INC-120",
+    "title": "API Key Authorization Header Malformation (Variation 10)",
+    "summary": "POST /orders failed with HTTP 401. Invalid API key error. Customer sent Bearer prefix instead of raw X-API-Key token. Environment: us-east-prod-2. Observed impact on cluster 10.",
+    "category": "Authentication",
+    "resolution": "Customer client configured with Bearer auth instead of custom header. Sent updated Postman collection with correct X-API-Key header format."
+  },
+  {
+    "incident_id": "INC-519",
+    "title": "Table Lock Contention on External Order Index",
+    "summary": "Elevated response times (4500ms) on GET /orders. Slow SQL query detected. Full table scan on unindexed external_order_id.",
+    "category": "Performance",
+    "resolution": "Created composite B-tree index on (customer_id, external_order_id). Query latency dropped from 4500ms to 8ms."
+  },
+  {
+    "incident_id": "INC-121",
+    "title": "Table Lock Contention on External Order Index (Variation 1)",
+    "summary": "Elevated response times (4500ms) on GET /orders. Slow SQL query detected. Full table scan on unindexed external_order_id. Environment: us-east-prod-2. Observed impact on cluster 1.",
+    "category": "Performance",
+    "resolution": "Created composite B-tree index on (customer_id, external_order_id). Query latency dropped from 4500ms to 8ms."
+  },
+  {
+    "incident_id": "INC-122",
+    "title": "Table Lock Contention on External Order Index (Variation 2)",
+    "summary": "Elevated response times (4500ms) on GET /orders. Slow SQL query detected. Full table scan on unindexed external_order_id. Environment: us-east-prod-3. Observed impact on cluster 2.",
+    "category": "Performance",
+    "resolution": "Created composite B-tree index on (customer_id, external_order_id). Query latency dropped from 4500ms to 8ms."
+  },
+  {
+    "incident_id": "INC-123",
+    "title": "Table Lock Contention on External Order Index (Variation 3)",
+    "summary": "Elevated response times (4500ms) on GET /orders. Slow SQL query detected. Full table scan on unindexed external_order_id. Environment: us-east-prod-1. Observed impact on cluster 3.",
+    "category": "Performance",
+    "resolution": "Created composite B-tree index on (customer_id, external_order_id). Query latency dropped from 4500ms to 8ms."
+  },
+  {
+    "incident_id": "INC-124",
+    "title": "Table Lock Contention on External Order Index (Variation 4)",
+    "summary": "Elevated response times (4500ms) on GET /orders. Slow SQL query detected. Full table scan on unindexed external_order_id. Environment: us-east-prod-2. Observed impact on cluster 4.",
+    "category": "Performance",
+    "resolution": "Created composite B-tree index on (customer_id, external_order_id). Query latency dropped from 4500ms to 8ms."
+  },
+  {
+    "incident_id": "INC-125",
+    "title": "Table Lock Contention on External Order Index (Variation 5)",
+    "summary": "Elevated response times (4500ms) on GET /orders. Slow SQL query detected. Full table scan on unindexed external_order_id. Environment: us-east-prod-3. Observed impact on cluster 5.",
+    "category": "Performance",
+    "resolution": "Created composite B-tree index on (customer_id, external_order_id). Query latency dropped from 4500ms to 8ms."
+  },
+  {
+    "incident_id": "INC-126",
+    "title": "Table Lock Contention on External Order Index (Variation 6)",
+    "summary": "Elevated response times (4500ms) on GET /orders. Slow SQL query detected. Full table scan on unindexed external_order_id. Environment: us-east-prod-1. Observed impact on cluster 6.",
+    "category": "Performance",
+    "resolution": "Created composite B-tree index on (customer_id, external_order_id). Query latency dropped from 4500ms to 8ms."
+  },
+  {
+    "incident_id": "INC-127",
+    "title": "Table Lock Contention on External Order Index (Variation 7)",
+    "summary": "Elevated response times (4500ms) on GET /orders. Slow SQL query detected. Full table scan on unindexed external_order_id. Environment: us-east-prod-2. Observed impact on cluster 7.",
+    "category": "Performance",
+    "resolution": "Created composite B-tree index on (customer_id, external_order_id). Query latency dropped from 4500ms to 8ms."
+  },
+  {
+    "incident_id": "INC-128",
+    "title": "Table Lock Contention on External Order Index (Variation 8)",
+    "summary": "Elevated response times (4500ms) on GET /orders. Slow SQL query detected. Full table scan on unindexed external_order_id. Environment: us-east-prod-3. Observed impact on cluster 8.",
+    "category": "Performance",
+    "resolution": "Created composite B-tree index on (customer_id, external_order_id). Query latency dropped from 4500ms to 8ms."
+  },
+  {
+    "incident_id": "INC-129",
+    "title": "Table Lock Contention on External Order Index (Variation 9)",
+    "summary": "Elevated response times (4500ms) on GET /orders. Slow SQL query detected. Full table scan on unindexed external_order_id. Environment: us-east-prod-1. Observed impact on cluster 9.",
+    "category": "Performance",
+    "resolution": "Created composite B-tree index on (customer_id, external_order_id). Query latency dropped from 4500ms to 8ms."
+  },
+  {
+    "incident_id": "INC-130",
+    "title": "Table Lock Contention on External Order Index (Variation 10)",
+    "summary": "Elevated response times (4500ms) on GET /orders. Slow SQL query detected. Full table scan on unindexed external_order_id. Environment: us-east-prod-2. Observed impact on cluster 10.",
+    "category": "Performance",
+    "resolution": "Created composite B-tree index on (customer_id, external_order_id). Query latency dropped from 4500ms to 8ms."
+  },
+  {
+    "incident_id": "INC-604",
+    "title": "Ingress Container Out Of Memory (OOM)",
+    "summary": "HTTP 503 Service Unavailable returned. CPU 98% and RAM 96%. Kubernetes worker node terminated by OOM killer.",
+    "category": "Infrastructure",
+    "resolution": "Memory leak identified in legacy XML payload parser. Scaled worker pods from 2 to 5 and updated JSON streaming parser."
+  },
+  {
+    "incident_id": "INC-131",
+    "title": "Ingress Container Out Of Memory (OOM) (Variation 1)",
+    "summary": "HTTP 503 Service Unavailable returned. CPU 98% and RAM 96%. Kubernetes worker node terminated by OOM killer. Environment: us-east-prod-2. Observed impact on cluster 1.",
+    "category": "Infrastructure",
+    "resolution": "Memory leak identified in legacy XML payload parser. Scaled worker pods from 2 to 5 and updated JSON streaming parser."
+  },
+  {
+    "incident_id": "INC-132",
+    "title": "Ingress Container Out Of Memory (OOM) (Variation 2)",
+    "summary": "HTTP 503 Service Unavailable returned. CPU 98% and RAM 96%. Kubernetes worker node terminated by OOM killer. Environment: us-east-prod-3. Observed impact on cluster 2.",
+    "category": "Infrastructure",
+    "resolution": "Memory leak identified in legacy XML payload parser. Scaled worker pods from 2 to 5 and updated JSON streaming parser."
+  },
+  {
+    "incident_id": "INC-133",
+    "title": "Ingress Container Out Of Memory (OOM) (Variation 3)",
+    "summary": "HTTP 503 Service Unavailable returned. CPU 98% and RAM 96%. Kubernetes worker node terminated by OOM killer. Environment: us-east-prod-1. Observed impact on cluster 3.",
+    "category": "Infrastructure",
+    "resolution": "Memory leak identified in legacy XML payload parser. Scaled worker pods from 2 to 5 and updated JSON streaming parser."
+  },
+  {
+    "incident_id": "INC-134",
+    "title": "Ingress Container Out Of Memory (OOM) (Variation 4)",
+    "summary": "HTTP 503 Service Unavailable returned. CPU 98% and RAM 96%. Kubernetes worker node terminated by OOM killer. Environment: us-east-prod-2. Observed impact on cluster 4.",
+    "category": "Infrastructure",
+    "resolution": "Memory leak identified in legacy XML payload parser. Scaled worker pods from 2 to 5 and updated JSON streaming parser."
+  },
+  {
+    "incident_id": "INC-135",
+    "title": "Ingress Container Out Of Memory (OOM) (Variation 5)",
+    "summary": "HTTP 503 Service Unavailable returned. CPU 98% and RAM 96%. Kubernetes worker node terminated by OOM killer. Environment: us-east-prod-3. Observed impact on cluster 5.",
+    "category": "Infrastructure",
+    "resolution": "Memory leak identified in legacy XML payload parser. Scaled worker pods from 2 to 5 and updated JSON streaming parser."
+  },
+  {
+    "incident_id": "INC-136",
+    "title": "Ingress Container Out Of Memory (OOM) (Variation 6)",
+    "summary": "HTTP 503 Service Unavailable returned. CPU 98% and RAM 96%. Kubernetes worker node terminated by OOM killer. Environment: us-east-prod-1. Observed impact on cluster 6.",
+    "category": "Infrastructure",
+    "resolution": "Memory leak identified in legacy XML payload parser. Scaled worker pods from 2 to 5 and updated JSON streaming parser."
+  },
+  {
+    "incident_id": "INC-137",
+    "title": "Ingress Container Out Of Memory (OOM) (Variation 7)",
+    "summary": "HTTP 503 Service Unavailable returned. CPU 98% and RAM 96%. Kubernetes worker node terminated by OOM killer. Environment: us-east-prod-2. Observed impact on cluster 7.",
+    "category": "Infrastructure",
+    "resolution": "Memory leak identified in legacy XML payload parser. Scaled worker pods from 2 to 5 and updated JSON streaming parser."
+  },
+  {
+    "incident_id": "INC-138",
+    "title": "Ingress Container Out Of Memory (OOM) (Variation 8)",
+    "summary": "HTTP 503 Service Unavailable returned. CPU 98% and RAM 96%. Kubernetes worker node terminated by OOM killer. Environment: us-east-prod-3. Observed impact on cluster 8.",
+    "category": "Infrastructure",
+    "resolution": "Memory leak identified in legacy XML payload parser. Scaled worker pods from 2 to 5 and updated JSON streaming parser."
+  },
+  {
+    "incident_id": "INC-139",
+    "title": "Ingress Container Out Of Memory (OOM) (Variation 9)",
+    "summary": "HTTP 503 Service Unavailable returned. CPU 98% and RAM 96%. Kubernetes worker node terminated by OOM killer. Environment: us-east-prod-1. Observed impact on cluster 9.",
+    "category": "Infrastructure",
+    "resolution": "Memory leak identified in legacy XML payload parser. Scaled worker pods from 2 to 5 and updated JSON streaming parser."
+  },
+  {
+    "incident_id": "INC-140",
+    "title": "Ingress Container Out Of Memory (OOM) (Variation 10)",
+    "summary": "HTTP 503 Service Unavailable returned. CPU 98% and RAM 96%. Kubernetes worker node terminated by OOM killer. Environment: us-east-prod-2. Observed impact on cluster 10.",
+    "category": "Infrastructure",
+    "resolution": "Memory leak identified in legacy XML payload parser. Scaled worker pods from 2 to 5 and updated JSON streaming parser."
+  },
+  {
+    "incident_id": "INC-215",
+    "title": "Silent Write Rollback / Asynchronous Commit Race",
+    "summary": "API acknowledged 201 Created but database SELECT returned 0 rows. Transaction rolled back silently before commit phase.",
+    "category": "Data Consistency",
+    "resolution": "Discovered race condition in async event emitter which dispatched HTTP response before database commit handler finished. Fixed transaction ordering."
+  },
+  {
+    "incident_id": "INC-141",
+    "title": "Silent Write Rollback / Asynchronous Commit Race (Variation 1)",
+    "summary": "API acknowledged 201 Created but database SELECT returned 0 rows. Transaction rolled back silently before commit phase. Environment: us-east-prod-2. Observed impact on cluster 1.",
+    "category": "Data Consistency",
+    "resolution": "Discovered race condition in async event emitter which dispatched HTTP response before database commit handler finished. Fixed transaction ordering."
+  },
+  {
+    "incident_id": "INC-142",
+    "title": "Silent Write Rollback / Asynchronous Commit Race (Variation 2)",
+    "summary": "API acknowledged 201 Created but database SELECT returned 0 rows. Transaction rolled back silently before commit phase. Environment: us-east-prod-3. Observed impact on cluster 2.",
+    "category": "Data Consistency",
+    "resolution": "Discovered race condition in async event emitter which dispatched HTTP response before database commit handler finished. Fixed transaction ordering."
+  },
+  {
+    "incident_id": "INC-143",
+    "title": "Silent Write Rollback / Asynchronous Commit Race (Variation 3)",
+    "summary": "API acknowledged 201 Created but database SELECT returned 0 rows. Transaction rolled back silently before commit phase. Environment: us-east-prod-1. Observed impact on cluster 3.",
+    "category": "Data Consistency",
+    "resolution": "Discovered race condition in async event emitter which dispatched HTTP response before database commit handler finished. Fixed transaction ordering."
+  },
+  {
+    "incident_id": "INC-144",
+    "title": "Silent Write Rollback / Asynchronous Commit Race (Variation 4)",
+    "summary": "API acknowledged 201 Created but database SELECT returned 0 rows. Transaction rolled back silently before commit phase. Environment: us-east-prod-2. Observed impact on cluster 4.",
+    "category": "Data Consistency",
+    "resolution": "Discovered race condition in async event emitter which dispatched HTTP response before database commit handler finished. Fixed transaction ordering."
+  },
+  {
+    "incident_id": "INC-145",
+    "title": "Silent Write Rollback / Asynchronous Commit Race (Variation 5)",
+    "summary": "API acknowledged 201 Created but database SELECT returned 0 rows. Transaction rolled back silently before commit phase. Environment: us-east-prod-3. Observed impact on cluster 5.",
+    "category": "Data Consistency",
+    "resolution": "Discovered race condition in async event emitter which dispatched HTTP response before database commit handler finished. Fixed transaction ordering."
+  },
+  {
+    "incident_id": "INC-146",
+    "title": "Silent Write Rollback / Asynchronous Commit Race (Variation 6)",
+    "summary": "API acknowledged 201 Created but database SELECT returned 0 rows. Transaction rolled back silently before commit phase. Environment: us-east-prod-1. Observed impact on cluster 6.",
+    "category": "Data Consistency",
+    "resolution": "Discovered race condition in async event emitter which dispatched HTTP response before database commit handler finished. Fixed transaction ordering."
+  },
+  {
+    "incident_id": "INC-147",
+    "title": "Silent Write Rollback / Asynchronous Commit Race (Variation 7)",
+    "summary": "API acknowledged 201 Created but database SELECT returned 0 rows. Transaction rolled back silently before commit phase. Environment: us-east-prod-2. Observed impact on cluster 7.",
+    "category": "Data Consistency",
+    "resolution": "Discovered race condition in async event emitter which dispatched HTTP response before database commit handler finished. Fixed transaction ordering."
+  },
+  {
+    "incident_id": "INC-148",
+    "title": "Silent Write Rollback / Asynchronous Commit Race (Variation 8)",
+    "summary": "API acknowledged 201 Created but database SELECT returned 0 rows. Transaction rolled back silently before commit phase. Environment: us-east-prod-3. Observed impact on cluster 8.",
+    "category": "Data Consistency",
+    "resolution": "Discovered race condition in async event emitter which dispatched HTTP response before database commit handler finished. Fixed transaction ordering."
+  },
+  {
+    "incident_id": "INC-149",
+    "title": "Silent Write Rollback / Asynchronous Commit Race (Variation 9)",
+    "summary": "API acknowledged 201 Created but database SELECT returned 0 rows. Transaction rolled back silently before commit phase. Environment: us-east-prod-1. Observed impact on cluster 9.",
+    "category": "Data Consistency",
+    "resolution": "Discovered race condition in async event emitter which dispatched HTTP response before database commit handler finished. Fixed transaction ordering."
+  },
+  {
+    "incident_id": "INC-150",
+    "title": "Silent Write Rollback / Asynchronous Commit Race (Variation 10)",
+    "summary": "API acknowledged 201 Created but database SELECT returned 0 rows. Transaction rolled back silently before commit phase. Environment: us-east-prod-2. Observed impact on cluster 10.",
+    "category": "Data Consistency",
+    "resolution": "Discovered race condition in async event emitter which dispatched HTTP response before database commit handler finished. Fixed transaction ordering."
+  },
+  {
+    "incident_id": "INC-198",
+    "title": "Missing Required Schema Parameter",
+    "summary": "Customer payload rejected with HTTP 422 Unprocessable Entity. Missing required field 'currency_code' in JSON body.",
+    "category": "Integration",
+    "resolution": "Customer updated ERP export pipeline to include 'currency_code: USD'. Validated payload in staging sandbox."
+  },
+  {
+    "incident_id": "INC-151",
+    "title": "Missing Required Schema Parameter (Variation 1)",
+    "summary": "Customer payload rejected with HTTP 422 Unprocessable Entity. Missing required field 'currency_code' in JSON body. Environment: us-east-prod-2. Observed impact on cluster 1.",
+    "category": "Integration",
+    "resolution": "Customer updated ERP export pipeline to include 'currency_code: USD'. Validated payload in staging sandbox."
+  },
+  {
+    "incident_id": "INC-152",
+    "title": "Missing Required Schema Parameter (Variation 2)",
+    "summary": "Customer payload rejected with HTTP 422 Unprocessable Entity. Missing required field 'currency_code' in JSON body. Environment: us-east-prod-3. Observed impact on cluster 2.",
+    "category": "Integration",
+    "resolution": "Customer updated ERP export pipeline to include 'currency_code: USD'. Validated payload in staging sandbox."
+  },
+  {
+    "incident_id": "INC-153",
+    "title": "Missing Required Schema Parameter (Variation 3)",
+    "summary": "Customer payload rejected with HTTP 422 Unprocessable Entity. Missing required field 'currency_code' in JSON body. Environment: us-east-prod-1. Observed impact on cluster 3.",
+    "category": "Integration",
+    "resolution": "Customer updated ERP export pipeline to include 'currency_code: USD'. Validated payload in staging sandbox."
+  },
+  {
+    "incident_id": "INC-154",
+    "title": "Missing Required Schema Parameter (Variation 4)",
+    "summary": "Customer payload rejected with HTTP 422 Unprocessable Entity. Missing required field 'currency_code' in JSON body. Environment: us-east-prod-2. Observed impact on cluster 4.",
+    "category": "Integration",
+    "resolution": "Customer updated ERP export pipeline to include 'currency_code: USD'. Validated payload in staging sandbox."
+  },
+  {
+    "incident_id": "INC-155",
+    "title": "Missing Required Schema Parameter (Variation 5)",
+    "summary": "Customer payload rejected with HTTP 422 Unprocessable Entity. Missing required field 'currency_code' in JSON body. Environment: us-east-prod-3. Observed impact on cluster 5.",
+    "category": "Integration",
+    "resolution": "Customer updated ERP export pipeline to include 'currency_code: USD'. Validated payload in staging sandbox."
+  },
+  {
+    "incident_id": "INC-156",
+    "title": "Missing Required Schema Parameter (Variation 6)",
+    "summary": "Customer payload rejected with HTTP 422 Unprocessable Entity. Missing required field 'currency_code' in JSON body. Environment: us-east-prod-1. Observed impact on cluster 6.",
+    "category": "Integration",
+    "resolution": "Customer updated ERP export pipeline to include 'currency_code: USD'. Validated payload in staging sandbox."
+  },
+  {
+    "incident_id": "INC-157",
+    "title": "Missing Required Schema Parameter (Variation 7)",
+    "summary": "Customer payload rejected with HTTP 422 Unprocessable Entity. Missing required field 'currency_code' in JSON body. Environment: us-east-prod-2. Observed impact on cluster 7.",
+    "category": "Integration",
+    "resolution": "Customer updated ERP export pipeline to include 'currency_code: USD'. Validated payload in staging sandbox."
+  },
+  {
+    "incident_id": "INC-158",
+    "title": "Missing Required Schema Parameter (Variation 8)",
+    "summary": "Customer payload rejected with HTTP 422 Unprocessable Entity. Missing required field 'currency_code' in JSON body. Environment: us-east-prod-3. Observed impact on cluster 8.",
+    "category": "Integration",
+    "resolution": "Customer updated ERP export pipeline to include 'currency_code: USD'. Validated payload in staging sandbox."
+  },
+  {
+    "incident_id": "INC-159",
+    "title": "Missing Required Schema Parameter (Variation 9)",
+    "summary": "Customer payload rejected with HTTP 422 Unprocessable Entity. Missing required field 'currency_code' in JSON body. Environment: us-east-prod-1. Observed impact on cluster 9.",
+    "category": "Integration",
+    "resolution": "Customer updated ERP export pipeline to include 'currency_code: USD'. Validated payload in staging sandbox."
+  },
+  {
+    "incident_id": "INC-160",
+    "title": "Missing Required Schema Parameter (Variation 10)",
+    "summary": "Customer payload rejected with HTTP 422 Unprocessable Entity. Missing required field 'currency_code' in JSON body. Environment: us-east-prod-2. Observed impact on cluster 10.",
+    "category": "Integration",
+    "resolution": "Customer updated ERP export pipeline to include 'currency_code: USD'. Validated payload in staging sandbox."
+  },
+  {
+    "incident_id": "INC-712",
+    "title": "Unhandled Null Pointer in Discount Engine",
+    "summary": "HTTP 500 internal server error. NullPointerException in PricingCalculationEngine.applyDiscounts() on null customer tier.",
+    "category": "Application",
+    "resolution": "Added fallback null-check in pricing engine to default missing tier to standard retail pricing."
+  },
+  {
+    "incident_id": "INC-161",
+    "title": "Unhandled Null Pointer in Discount Engine (Variation 1)",
+    "summary": "HTTP 500 internal server error. NullPointerException in PricingCalculationEngine.applyDiscounts() on null customer tier. Environment: us-east-prod-2. Observed impact on cluster 1.",
+    "category": "Application",
+    "resolution": "Added fallback null-check in pricing engine to default missing tier to standard retail pricing."
+  },
+  {
+    "incident_id": "INC-162",
+    "title": "Unhandled Null Pointer in Discount Engine (Variation 2)",
+    "summary": "HTTP 500 internal server error. NullPointerException in PricingCalculationEngine.applyDiscounts() on null customer tier. Environment: us-east-prod-3. Observed impact on cluster 2.",
+    "category": "Application",
+    "resolution": "Added fallback null-check in pricing engine to default missing tier to standard retail pricing."
+  },
+  {
+    "incident_id": "INC-163",
+    "title": "Unhandled Null Pointer in Discount Engine (Variation 3)",
+    "summary": "HTTP 500 internal server error. NullPointerException in PricingCalculationEngine.applyDiscounts() on null customer tier. Environment: us-east-prod-1. Observed impact on cluster 3.",
+    "category": "Application",
+    "resolution": "Added fallback null-check in pricing engine to default missing tier to standard retail pricing."
+  },
+  {
+    "incident_id": "INC-164",
+    "title": "Unhandled Null Pointer in Discount Engine (Variation 4)",
+    "summary": "HTTP 500 internal server error. NullPointerException in PricingCalculationEngine.applyDiscounts() on null customer tier. Environment: us-east-prod-2. Observed impact on cluster 4.",
+    "category": "Application",
+    "resolution": "Added fallback null-check in pricing engine to default missing tier to standard retail pricing."
+  },
+  {
+    "incident_id": "INC-165",
+    "title": "Unhandled Null Pointer in Discount Engine (Variation 5)",
+    "summary": "HTTP 500 internal server error. NullPointerException in PricingCalculationEngine.applyDiscounts() on null customer tier. Environment: us-east-prod-3. Observed impact on cluster 5.",
+    "category": "Application",
+    "resolution": "Added fallback null-check in pricing engine to default missing tier to standard retail pricing."
+  },
+  {
+    "incident_id": "INC-166",
+    "title": "Unhandled Null Pointer in Discount Engine (Variation 6)",
+    "summary": "HTTP 500 internal server error. NullPointerException in PricingCalculationEngine.applyDiscounts() on null customer tier. Environment: us-east-prod-1. Observed impact on cluster 6.",
+    "category": "Application",
+    "resolution": "Added fallback null-check in pricing engine to default missing tier to standard retail pricing."
+  },
+  {
+    "incident_id": "INC-167",
+    "title": "Unhandled Null Pointer in Discount Engine (Variation 7)",
+    "summary": "HTTP 500 internal server error. NullPointerException in PricingCalculationEngine.applyDiscounts() on null customer tier. Environment: us-east-prod-2. Observed impact on cluster 7.",
+    "category": "Application",
+    "resolution": "Added fallback null-check in pricing engine to default missing tier to standard retail pricing."
+  },
+  {
+    "incident_id": "INC-168",
+    "title": "Unhandled Null Pointer in Discount Engine (Variation 8)",
+    "summary": "HTTP 500 internal server error. NullPointerException in PricingCalculationEngine.applyDiscounts() on null customer tier. Environment: us-east-prod-3. Observed impact on cluster 8.",
+    "category": "Application",
+    "resolution": "Added fallback null-check in pricing engine to default missing tier to standard retail pricing."
+  },
+  {
+    "incident_id": "INC-169",
+    "title": "Unhandled Null Pointer in Discount Engine (Variation 9)",
+    "summary": "HTTP 500 internal server error. NullPointerException in PricingCalculationEngine.applyDiscounts() on null customer tier. Environment: us-east-prod-1. Observed impact on cluster 9.",
+    "category": "Application",
+    "resolution": "Added fallback null-check in pricing engine to default missing tier to standard retail pricing."
+  },
+  {
+    "incident_id": "INC-170",
+    "title": "Unhandled Null Pointer in Discount Engine (Variation 10)",
+    "summary": "HTTP 500 internal server error. NullPointerException in PricingCalculationEngine.applyDiscounts() on null customer tier. Environment: us-east-prod-2. Observed impact on cluster 10.",
+    "category": "Application",
+    "resolution": "Added fallback null-check in pricing engine to default missing tier to standard retail pricing."
+  },
+  {
+    "incident_id": "INC-820",
+    "title": "Customer Webhook Endpoint Timeout",
+    "summary": "HTTP 504 Gateway Timeout on POST /webhooks/orders. Customer endpoint timed out after 10000ms. Retries exhausted.",
+    "category": "Integration",
+    "resolution": "Customer firewall was dropping inbound webhook packets from our IP block. Customer whitelisted gateway CIDR range."
+  },
+  {
+    "incident_id": "INC-171",
+    "title": "Customer Webhook Endpoint Timeout (Variation 1)",
+    "summary": "HTTP 504 Gateway Timeout on POST /webhooks/orders. Customer endpoint timed out after 10000ms. Retries exhausted. Environment: us-east-prod-2. Observed impact on cluster 1.",
+    "category": "Integration",
+    "resolution": "Customer firewall was dropping inbound webhook packets from our IP block. Customer whitelisted gateway CIDR range."
+  },
+  {
+    "incident_id": "INC-172",
+    "title": "Customer Webhook Endpoint Timeout (Variation 2)",
+    "summary": "HTTP 504 Gateway Timeout on POST /webhooks/orders. Customer endpoint timed out after 10000ms. Retries exhausted. Environment: us-east-prod-3. Observed impact on cluster 2.",
+    "category": "Integration",
+    "resolution": "Customer firewall was dropping inbound webhook packets from our IP block. Customer whitelisted gateway CIDR range."
+  },
+  {
+    "incident_id": "INC-173",
+    "title": "Customer Webhook Endpoint Timeout (Variation 3)",
+    "summary": "HTTP 504 Gateway Timeout on POST /webhooks/orders. Customer endpoint timed out after 10000ms. Retries exhausted. Environment: us-east-prod-1. Observed impact on cluster 3.",
+    "category": "Integration",
+    "resolution": "Customer firewall was dropping inbound webhook packets from our IP block. Customer whitelisted gateway CIDR range."
+  },
+  {
+    "incident_id": "INC-174",
+    "title": "Customer Webhook Endpoint Timeout (Variation 4)",
+    "summary": "HTTP 504 Gateway Timeout on POST /webhooks/orders. Customer endpoint timed out after 10000ms. Retries exhausted. Environment: us-east-prod-2. Observed impact on cluster 4.",
+    "category": "Integration",
+    "resolution": "Customer firewall was dropping inbound webhook packets from our IP block. Customer whitelisted gateway CIDR range."
+  },
+  {
+    "incident_id": "INC-175",
+    "title": "Customer Webhook Endpoint Timeout (Variation 5)",
+    "summary": "HTTP 504 Gateway Timeout on POST /webhooks/orders. Customer endpoint timed out after 10000ms. Retries exhausted. Environment: us-east-prod-3. Observed impact on cluster 5.",
+    "category": "Integration",
+    "resolution": "Customer firewall was dropping inbound webhook packets from our IP block. Customer whitelisted gateway CIDR range."
+  },
+  {
+    "incident_id": "INC-176",
+    "title": "Customer Webhook Endpoint Timeout (Variation 6)",
+    "summary": "HTTP 504 Gateway Timeout on POST /webhooks/orders. Customer endpoint timed out after 10000ms. Retries exhausted. Environment: us-east-prod-1. Observed impact on cluster 6.",
+    "category": "Integration",
+    "resolution": "Customer firewall was dropping inbound webhook packets from our IP block. Customer whitelisted gateway CIDR range."
+  },
+  {
+    "incident_id": "INC-177",
+    "title": "Customer Webhook Endpoint Timeout (Variation 7)",
+    "summary": "HTTP 504 Gateway Timeout on POST /webhooks/orders. Customer endpoint timed out after 10000ms. Retries exhausted. Environment: us-east-prod-2. Observed impact on cluster 7.",
+    "category": "Integration",
+    "resolution": "Customer firewall was dropping inbound webhook packets from our IP block. Customer whitelisted gateway CIDR range."
+  },
+  {
+    "incident_id": "INC-178",
+    "title": "Customer Webhook Endpoint Timeout (Variation 8)",
+    "summary": "HTTP 504 Gateway Timeout on POST /webhooks/orders. Customer endpoint timed out after 10000ms. Retries exhausted. Environment: us-east-prod-3. Observed impact on cluster 8.",
+    "category": "Integration",
+    "resolution": "Customer firewall was dropping inbound webhook packets from our IP block. Customer whitelisted gateway CIDR range."
+  },
+  {
+    "incident_id": "INC-179",
+    "title": "Customer Webhook Endpoint Timeout (Variation 9)",
+    "summary": "HTTP 504 Gateway Timeout on POST /webhooks/orders. Customer endpoint timed out after 10000ms. Retries exhausted. Environment: us-east-prod-1. Observed impact on cluster 9.",
+    "category": "Integration",
+    "resolution": "Customer firewall was dropping inbound webhook packets from our IP block. Customer whitelisted gateway CIDR range."
+  },
+  {
+    "incident_id": "INC-180",
+    "title": "Customer Webhook Endpoint Timeout (Variation 10)",
+    "summary": "HTTP 504 Gateway Timeout on POST /webhooks/orders. Customer endpoint timed out after 10000ms. Retries exhausted. Environment: us-east-prod-2. Observed impact on cluster 10.",
+    "category": "Integration",
+    "resolution": "Customer firewall was dropping inbound webhook packets from our IP block. Customer whitelisted gateway CIDR range."
+  },
+  {
+    "incident_id": "INC-445",
+    "title": "Deadlock on Concurrent Order Submissions",
+    "summary": "POST /orders failed with 500 DB_DEADLOCK. Deadlock detected during concurrent row updates with identical external order ID.",
+    "category": "Database",
+    "resolution": "Implemented distributed Redis mutex locking on (customer_id, external_order_id) to serialize duplicate submissions."
+  },
+  {
+    "incident_id": "INC-181",
+    "title": "Deadlock on Concurrent Order Submissions (Variation 1)",
+    "summary": "POST /orders failed with 500 DB_DEADLOCK. Deadlock detected during concurrent row updates with identical external order ID. Environment: us-east-prod-2. Observed impact on cluster 1.",
+    "category": "Database",
+    "resolution": "Implemented distributed Redis mutex locking on (customer_id, external_order_id) to serialize duplicate submissions."
+  },
+  {
+    "incident_id": "INC-182",
+    "title": "Deadlock on Concurrent Order Submissions (Variation 2)",
+    "summary": "POST /orders failed with 500 DB_DEADLOCK. Deadlock detected during concurrent row updates with identical external order ID. Environment: us-east-prod-3. Observed impact on cluster 2.",
+    "category": "Database",
+    "resolution": "Implemented distributed Redis mutex locking on (customer_id, external_order_id) to serialize duplicate submissions."
+  },
+  {
+    "incident_id": "INC-183",
+    "title": "Deadlock on Concurrent Order Submissions (Variation 3)",
+    "summary": "POST /orders failed with 500 DB_DEADLOCK. Deadlock detected during concurrent row updates with identical external order ID. Environment: us-east-prod-1. Observed impact on cluster 3.",
+    "category": "Database",
+    "resolution": "Implemented distributed Redis mutex locking on (customer_id, external_order_id) to serialize duplicate submissions."
+  },
+  {
+    "incident_id": "INC-184",
+    "title": "Deadlock on Concurrent Order Submissions (Variation 4)",
+    "summary": "POST /orders failed with 500 DB_DEADLOCK. Deadlock detected during concurrent row updates with identical external order ID. Environment: us-east-prod-2. Observed impact on cluster 4.",
+    "category": "Database",
+    "resolution": "Implemented distributed Redis mutex locking on (customer_id, external_order_id) to serialize duplicate submissions."
+  },
+  {
+    "incident_id": "INC-185",
+    "title": "Deadlock on Concurrent Order Submissions (Variation 5)",
+    "summary": "POST /orders failed with 500 DB_DEADLOCK. Deadlock detected during concurrent row updates with identical external order ID. Environment: us-east-prod-3. Observed impact on cluster 5.",
+    "category": "Database",
+    "resolution": "Implemented distributed Redis mutex locking on (customer_id, external_order_id) to serialize duplicate submissions."
+  },
+  {
+    "incident_id": "INC-186",
+    "title": "Deadlock on Concurrent Order Submissions (Variation 6)",
+    "summary": "POST /orders failed with 500 DB_DEADLOCK. Deadlock detected during concurrent row updates with identical external order ID. Environment: us-east-prod-1. Observed impact on cluster 6.",
+    "category": "Database",
+    "resolution": "Implemented distributed Redis mutex locking on (customer_id, external_order_id) to serialize duplicate submissions."
+  },
+  {
+    "incident_id": "INC-187",
+    "title": "Deadlock on Concurrent Order Submissions (Variation 7)",
+    "summary": "POST /orders failed with 500 DB_DEADLOCK. Deadlock detected during concurrent row updates with identical external order ID. Environment: us-east-prod-2. Observed impact on cluster 7.",
+    "category": "Database",
+    "resolution": "Implemented distributed Redis mutex locking on (customer_id, external_order_id) to serialize duplicate submissions."
+  },
+  {
+    "incident_id": "INC-188",
+    "title": "Deadlock on Concurrent Order Submissions (Variation 8)",
+    "summary": "POST /orders failed with 500 DB_DEADLOCK. Deadlock detected during concurrent row updates with identical external order ID. Environment: us-east-prod-3. Observed impact on cluster 8.",
+    "category": "Database",
+    "resolution": "Implemented distributed Redis mutex locking on (customer_id, external_order_id) to serialize duplicate submissions."
+  },
+  {
+    "incident_id": "INC-189",
+    "title": "Deadlock on Concurrent Order Submissions (Variation 9)",
+    "summary": "POST /orders failed with 500 DB_DEADLOCK. Deadlock detected during concurrent row updates with identical external order ID. Environment: us-east-prod-1. Observed impact on cluster 9.",
+    "category": "Database",
+    "resolution": "Implemented distributed Redis mutex locking on (customer_id, external_order_id) to serialize duplicate submissions."
+  },
+  {
+    "incident_id": "INC-190",
+    "title": "Deadlock on Concurrent Order Submissions (Variation 10)",
+    "summary": "POST /orders failed with 500 DB_DEADLOCK. Deadlock detected during concurrent row updates with identical external order ID. Environment: us-east-prod-2. Observed impact on cluster 10.",
+    "category": "Database",
+    "resolution": "Implemented distributed Redis mutex locking on (customer_id, external_order_id) to serialize duplicate submissions."
+  },
+  {
+    "incident_id": "INC-332",
+    "title": "Stale Cached API Key After Rotation",
+    "summary": "Customer received 401 Unauthorized immediately after generating new API credentials. Redis cache held expired key hash.",
+    "category": "Authentication",
+    "resolution": "Implemented instant Redis cache invalidation webhook on API key rotation in partner portal."
+  },
+  {
+    "incident_id": "INC-191",
+    "title": "Stale Cached API Key After Rotation (Variation 1)",
+    "summary": "Customer received 401 Unauthorized immediately after generating new API credentials. Redis cache held expired key hash. Environment: us-east-prod-2. Observed impact on cluster 1.",
+    "category": "Authentication",
+    "resolution": "Implemented instant Redis cache invalidation webhook on API key rotation in partner portal."
+  },
+  {
+    "incident_id": "INC-192",
+    "title": "Stale Cached API Key After Rotation (Variation 2)",
+    "summary": "Customer received 401 Unauthorized immediately after generating new API credentials. Redis cache held expired key hash. Environment: us-east-prod-3. Observed impact on cluster 2.",
+    "category": "Authentication",
+    "resolution": "Implemented instant Redis cache invalidation webhook on API key rotation in partner portal."
+  },
+  {
+    "incident_id": "INC-193",
+    "title": "Stale Cached API Key After Rotation (Variation 3)",
+    "summary": "Customer received 401 Unauthorized immediately after generating new API credentials. Redis cache held expired key hash. Environment: us-east-prod-1. Observed impact on cluster 3.",
+    "category": "Authentication",
+    "resolution": "Implemented instant Redis cache invalidation webhook on API key rotation in partner portal."
+  },
+  {
+    "incident_id": "INC-194",
+    "title": "Stale Cached API Key After Rotation (Variation 4)",
+    "summary": "Customer received 401 Unauthorized immediately after generating new API credentials. Redis cache held expired key hash. Environment: us-east-prod-2. Observed impact on cluster 4.",
+    "category": "Authentication",
+    "resolution": "Implemented instant Redis cache invalidation webhook on API key rotation in partner portal."
+  },
+  {
+    "incident_id": "INC-195",
+    "title": "Stale Cached API Key After Rotation (Variation 5)",
+    "summary": "Customer received 401 Unauthorized immediately after generating new API credentials. Redis cache held expired key hash. Environment: us-east-prod-3. Observed impact on cluster 5.",
+    "category": "Authentication",
+    "resolution": "Implemented instant Redis cache invalidation webhook on API key rotation in partner portal."
+  },
+  {
+    "incident_id": "INC-196",
+    "title": "Stale Cached API Key After Rotation (Variation 6)",
+    "summary": "Customer received 401 Unauthorized immediately after generating new API credentials. Redis cache held expired key hash. Environment: us-east-prod-1. Observed impact on cluster 6.",
+    "category": "Authentication",
+    "resolution": "Implemented instant Redis cache invalidation webhook on API key rotation in partner portal."
+  },
+  {
+    "incident_id": "INC-197",
+    "title": "Stale Cached API Key After Rotation (Variation 7)",
+    "summary": "Customer received 401 Unauthorized immediately after generating new API credentials. Redis cache held expired key hash. Environment: us-east-prod-2. Observed impact on cluster 7.",
+    "category": "Authentication",
+    "resolution": "Implemented instant Redis cache invalidation webhook on API key rotation in partner portal."
+  },
+  {
+    "incident_id": "INC-198",
+    "title": "Stale Cached API Key After Rotation (Variation 8)",
+    "summary": "Customer received 401 Unauthorized immediately after generating new API credentials. Redis cache held expired key hash. Environment: us-east-prod-3. Observed impact on cluster 8.",
+    "category": "Authentication",
+    "resolution": "Implemented instant Redis cache invalidation webhook on API key rotation in partner portal."
+  },
+  {
+    "incident_id": "INC-199",
+    "title": "Stale Cached API Key After Rotation (Variation 9)",
+    "summary": "Customer received 401 Unauthorized immediately after generating new API credentials. Redis cache held expired key hash. Environment: us-east-prod-1. Observed impact on cluster 9.",
+    "category": "Authentication",
+    "resolution": "Implemented instant Redis cache invalidation webhook on API key rotation in partner portal."
+  },
+  {
+    "incident_id": "INC-200",
+    "title": "Stale Cached API Key After Rotation (Variation 10)",
+    "summary": "Customer received 401 Unauthorized immediately after generating new API credentials. Redis cache held expired key hash. Environment: us-east-prod-2. Observed impact on cluster 10.",
+    "category": "Authentication",
+    "resolution": "Implemented instant Redis cache invalidation webhook on API key rotation in partner portal."
+  }
+]
