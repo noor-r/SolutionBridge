@@ -14,13 +14,13 @@ $$\text{Customer Integration} \rightarrow \text{API Testing} \rightarrow \text{S
 
 ---
 
-## 1. Business Problem & Product Solutions Engineer Use Case
+## 1. Business Problem & Solutions Engineer Use Case
 
 Imagine an enterprise SaaS company providing B2B order and catalog APIs. A customer integration lead reports:
 
 > *"Our order integration is failing or becoming unacceptably slow during morning peak hours."*
 
-A Product Solutions Engineer cannot simply guess or point fingers. They must investigate:
+A Solutions Engineer cannot simply guess or point fingers. They must investigate:
 1. **Is the customer's request valid?** (Inspect schema, headers, and authentication)
 2. **Did the request reach the backend?** (Correlate Request IDs across structured gateway and microservice logs)
 3. **Did the backend commit to the database?** (Execute forensic raw SQL queries to detect unpersisted or rolled-back records)
@@ -397,7 +397,7 @@ npx --yes newman run postman/SolutionBridge.postman_collection.json -e postman/S
 
 ## 10. One-Command Demonstration Runner
 
-To demonstrate the complete Product Solutions Engineer investigation workflow in one terminal command:
+To demonstrate the complete Solutions Engineer investigation workflow in one terminal command:
 
 ```bash
 python scripts/run_demo.py
