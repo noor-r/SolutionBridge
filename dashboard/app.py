@@ -3,13 +3,30 @@
 Enterprise Streamlit Dashboard for Product Solutions Engineers.
 """
 
+import sys
+from pathlib import Path
+
+# Ensure project root directory is prioritized over dashboard directory
+# to prevent 'dashboard/app.py' from colliding with the top-level 'app' package.
+_PROJECT_ROOT = str(Path(__file__).resolve().parent.parent)
+_DASHBOARD_DIR = str(Path(__file__).resolve().parent)
+while _DASHBOARD_DIR in sys.path:
+    sys.path.remove(_DASHBOARD_DIR)
+if _PROJECT_ROOT not in sys.path:
+    sys.path.insert(0, _PROJECT_ROOT)
+
 import json
 from datetime import datetime, timedelta, timezone
-from pathlib import Path
 import altair as alt
 import pandas as pd
 import requests
 import streamlit as st
+
+from app.db.database import SessionLocal
+from app.services.sql_validation_service import SQLValidationService
+from app.services.anomaly_service import AnomalyDetectionService
+from app.services.classification_service import IncidentClassificationService
+from app.services.similarity_service import IncidentSimilarityService
 
 # Configure Page
 st.set_page_config(
@@ -113,6 +130,7 @@ navigation = st.sidebar.radio(
         "📑 Incident Details",
         "📈 System Health",
     ],
+    key="portal_sidebar_navigation",
 )
 
 st.sidebar.divider()
@@ -134,6 +152,7 @@ sim_scenario = st.sidebar.selectbox(
         "webhook_failure",
         "data_inconsistency",
     ],
+    key="portal_sidebar_sim_scenario",
 )
 sim_cust = st.sidebar.selectbox("Target Customer", [1, 2, 3], format_func=lambda x: f"Customer #{x}")
 
@@ -372,10 +391,7 @@ elif navigation == "🔍 SQL Validation":
     st.markdown('<div class="sub-header">Direct, parameterized raw SQL diagnostic queries for Product Solutions Engineers</div>', unsafe_allow_html=True)
     st.info("🔒 **Controlled Access**: Arbitrary SQL execution is strictly disabled. Predefined, parameterized diagnostic tools prevent data corruption.")
 
-    # Import SQL Validation Service directly for high-performance parameterized query execution
-    from app.db.database import SessionLocal
-    from app.services.sql_validation_service import SQLValidationService
-
+    # Use SQL Validation Service directly for high-performance parameterized query execution
     db_session = SessionLocal()
     sql_svc = SQLValidationService(db_session)
 
@@ -534,20 +550,19 @@ elif navigation == "🤖 ML Diagnostics":
         st.subheader("Telemetry Anomaly Detection (Isolation Forest)")
         st.caption("Evaluate real-time system metrics against trained normal baseline.")
 
-        from app.services.anomaly_service import AnomalyDetectionService
         anom_svc = AnomalyDetectionService()
 
         col1, col2, col3 = st.columns(3)
         with col1:
-            test_rt = st.slider("Response Time (ms)", 10.0, 5000.0, 85.0)
-            test_db = st.slider("DB Latency (ms)", 1.0, 500.0, 6.5)
+            test_rt = st.slider("Response Time (ms)", 10.0, 5000.0, 85.0, key="ml_slider_rt")
+            test_db = st.slider("DB Latency (ms)", 1.0, 500.0, 6.5, key="ml_slider_db")
         with col2:
-            test_cpu = st.slider("CPU Utilization (%)", 5.0, 100.0, 32.0)
-            test_mem = st.slider("Memory (%)", 10.0, 100.0, 48.0)
+            test_cpu = st.slider("CPU Utilization (%)", 5.0, 100.0, 32.0, key="ml_slider_cpu")
+            test_mem = st.slider("Memory (%)", 10.0, 100.0, 48.0, key="ml_slider_mem")
         with col3:
-            test_req_rate = st.slider("Request Rate (req/s)", 10.0, 2000.0, 180.0)
-            test_err_rate = st.slider("Error Rate (%)", 0.0, 100.0, 0.4)
-            test_conns = st.slider("Active Connections", 5, 150, 25)
+            test_req_rate = st.slider("Request Rate (req/s)", 10.0, 2000.0, 180.0, key="ml_slider_req_rate")
+            test_err_rate = st.slider("Error Rate (%)", 0.0, 100.0, 0.4, key="ml_slider_err_rate")
+            test_conns = st.slider("Active Connections", 5, 150, 25, key="ml_slider_conns")
 
         vector = {
             "response_time_ms": test_rt,
@@ -579,20 +594,20 @@ elif navigation == "🤖 ML Diagnostics":
         st.subheader("Incident Category Classifier (TF-IDF + Logistic Regression)")
         st.caption("Predicts likely incident category across 7 PSE classes.")
 
-        from app.services.classification_service import IncidentClassificationService
         clf_svc = IncidentClassificationService()
 
         test_msg = st.text_area(
             "Input Log / Incident Text",
             value="Database connection pool timeout waiting for connection on POST /api/v1/orders",
+            key="ml_clf_input_msg",
         )
         c1, c2, c3 = st.columns(3)
         with c1:
-            t_err = st.text_input("Error Code", value="DB_TIMEOUT")
+            t_err = st.text_input("Error Code", value="DB_TIMEOUT", key="ml_clf_err_code")
         with c2:
-            t_status = st.number_input("HTTP Status", value=500)
+            t_status = st.number_input("HTTP Status", value=500, key="ml_clf_http_status")
         with c3:
-            t_rt = st.number_input("Response Time (ms)", value=4820.0)
+            t_rt = st.number_input("Response Time (ms)", value=4820.0, key="ml_clf_rt_ms")
 
         clf_res = clf_svc.classify_incident(
             message=test_msg,
@@ -617,15 +632,15 @@ elif navigation == "🤖 ML Diagnostics":
         st.subheader("Semantic Incident Retrieval (Sentence-Transformers + FAISS)")
         st.caption("Queries 110 historical postmortems and past engineering resolutions using dense 384-d embeddings.")
 
-        from app.services.similarity_service import IncidentSimilarityService
         sim_svc = IncidentSimilarityService()
 
         sim_query = st.text_input(
             "Natural Language Incident Query:",
             value="POST /orders returned 500 database timeout and orders were not saved",
+            key="ml_sim_query_input",
         )
 
-        if st.button("Search Historical Incidents", type="primary"):
+        if st.button("Search Historical Incidents", type="primary", key="ml_sim_search_btn"):
             matches = sim_svc.find_similar_incidents(sim_query, top_k=3)
             for m in matches:
                 st.markdown(f"""
