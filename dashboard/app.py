@@ -41,7 +41,7 @@ st.markdown("""
 <style>
     .gradient-header {
         background: linear-gradient(90deg, #1e3a8a 0%, #3b82f6 100%);
-        color: white;
+        color: white !important;
         padding: 20px;
         border-radius: 8px;
         margin-bottom: 20px;
@@ -50,27 +50,27 @@ st.markdown("""
     .gradient-header h1 {
         margin: 0;
         font-size: 32px;
-        color: white;
+        color: white !important;
     }
     .gradient-header p {
         margin: 5px 0 0 0;
         font-size: 16px;
         opacity: 0.9;
+        color: white !important;
     }
     .main-header {
         font-size: 26px;
         font-weight: 700;
-        color: #1e293b;
         margin-bottom: 2px;
     }
     .sub-header {
         font-size: 14px;
-        color: #64748b;
+        opacity: 0.8;
         margin-bottom: 20px;
     }
     .metric-card {
-        background-color: #f8fafc;
-        border: 1px solid #e2e8f0;
+        background-color: rgba(125, 125, 125, 0.08);
+        border: 1px solid rgba(125, 125, 125, 0.2);
         border-radius: 8px;
         padding: 16px;
         box-shadow: 0 1px 3px rgba(0,0,0,0.05);
@@ -89,12 +89,13 @@ st.markdown("""
         border-radius: 4px;
         font-weight: 600;
     }
-    .sev-1 { background-color: #ef4444; color: white; padding: 2px 6px; border-radius: 4px; font-size: 12px; font-weight: bold; }
-    .sev-2 { background-color: #f97316; color: white; padding: 2px 6px; border-radius: 4px; font-size: 12px; font-weight: bold; }
-    .sev-3 { background-color: #eab308; color: black; padding: 2px 6px; border-radius: 4px; font-size: 12px; font-weight: bold; }
-    .sev-4 { background-color: #22c55e; color: white; padding: 2px 6px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+    .sev-1 { background-color: #ef4444; color: white !important; padding: 2px 6px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+    .sev-2 { background-color: #f97316; color: white !important; padding: 2px 6px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+    .sev-3 { background-color: #eab308; color: black !important; padding: 2px 6px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+    .sev-4 { background-color: #22c55e; color: white !important; padding: 2px 6px; border-radius: 4px; font-size: 12px; font-weight: bold; }
     .evidence-box {
-        background-color: #f1f5f9;
+        background-color: rgba(59, 130, 246, 0.08);
+        border: 1px solid rgba(59, 130, 246, 0.2);
         border-left: 4px solid #3b82f6;
         padding: 12px;
         margin-bottom: 8px;
@@ -756,15 +757,21 @@ elif navigation == "🤖 ML Diagnostics":
         if st.button("Search Historical Incidents", type="primary", key="ml_sim_search_btn"):
             with st.spinner("Searching FAISS index..."):
                 matches = sim_svc.find_similar_incidents(sim_query, top_k=3)
+            if not matches:
+                st.info("No matching historical incidents found.")
             for m in matches:
-                st.markdown(f"""
-                <div class="evidence-box">
-                    <strong>#{m['incident_id']} — {m['title']}</strong> (Similarity: {m['similarity_score']*100:.1f}%)<br/>
-                    <small><strong>Category:</strong> {m['category']}</small><br/>
-                    <em>Summary:</em> {m['summary']}<br/>
-                    <strong style="color:#0f766e;">Past Engineering Resolution:</strong> {m['resolution']}
-                </div>
-                """, unsafe_allow_html=True)
+                with st.container(border=True):
+                    col_top_l, col_top_r = st.columns([3, 1])
+                    with col_top_l:
+                        st.markdown(f"#### 🏷️ #{m['incident_id']} — {m['title']}")
+                        st.markdown(f"**Category:** `{m['category']}` | **Similarity Score:** `{m['similarity_score']*100:.1f}%`")
+                    with col_top_r:
+                        st.metric("Similarity", f"{m['similarity_score']*100:.1f}%")
+
+                    if m.get('summary'):
+                        st.markdown(f"**Incident Summary:** {m['summary']}")
+                    
+                    st.success(f"**🛠️ Past Engineering Resolution:**\n\n{m['resolution']}")
 
 # ===================================================================
 # 8. INCIDENT DETAILS PAGE
@@ -816,7 +823,7 @@ elif navigation == "📑 Incident Details":
             if diag and diag.get("similar_incidents"):
                 for m in diag["similar_incidents"]:
                     st.markdown(f"**#{m['incident_id']} — {m['title']}** (Similarity: {m['similarity_score']*100:.1f}%)")
-                    st.caption(f"Past Resolution: {m['resolution']}")
+                    st.success(f"**Past Engineering Resolution:**\n\n{m['resolution']}")
             else:
                 st.caption("Semantic matches ready upon investigation.")
 
