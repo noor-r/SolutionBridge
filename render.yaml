@@ -26,3 +26,5 @@ services:
         value: "sqlite:///./solutionbridge.db"
       - key: ENVIRONMENT
         value: "production"
+      - key: BACKEND_API_URL
+        value: "http://localhost:8000"
