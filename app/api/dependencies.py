@@ -21,10 +21,14 @@ def get_current_customer(
     if not x_api_key:
         return None
 
-    customers = db.query(Customer).filter(Customer.status == "active").all()
-    for customer in customers:
-        if verify_api_key(x_api_key, customer.api_key_hash):
-            return customer
+    computed_hash = hash_api_key(x_api_key)
+    customer = (
+        db.query(Customer)
+        .filter(Customer.api_key_hash == computed_hash, Customer.status == "active")
+        .first()
+    )
+    if customer and verify_api_key(x_api_key, customer.api_key_hash):
+        return customer
 
     req_id = get_current_request_id()
     logger.warning(

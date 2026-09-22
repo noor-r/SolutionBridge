@@ -87,14 +87,14 @@ class RootCauseEngine:
         # Deterministic Root Cause Decision Logic (Evidence-Weighted)
         # -------------------------------------------------------------------
         # Check rule 1: Authentication Failure (Definitive 401 / Auth log)
-        if "AUTH_INVALID" in error_codes or status_code == 401 or "auth" in endpoint.lower():
+        if "AUTH_INVALID" in error_codes or status_code == 401:
             category = "Authentication"
             probable_cause = "Customer API key validation failure: invalid signature, expired credential, or malformed header."
             confidence = min(0.98, max(prob, 0.92))
             rules_triggered.append("RULE_AUTH_REJECTION")
 
         # Check rule 2: Data Inconsistency / Silent Rollback
-        elif sql_evidence.get("inconsistency_detected") or "DATA_INCONSISTENCY" in error_codes or (status_code == 201 and persisted is False):
+        elif sql_evidence.get("inconsistency_detected") or "DATA_INCONSISTENCY" in error_codes or (status_code == 201 and persisted is False and "DATA_INCONSISTENCY" in error_codes):
             category = "Data Consistency"
             probable_cause = "Asynchronous write failure or transaction rollback occurring after HTTP response dispatch."
             confidence = 0.94

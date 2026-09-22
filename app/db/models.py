@@ -37,6 +37,12 @@ class Customer(Base):
     test_runs = relationship("ApiTestRun", back_populates="customer")
     incidents = relationship("Incident", back_populates="customer")
 
+    @property
+    def masked_api_key(self) -> str:
+        tag = "live" if self.environment in ("production", "live") else "test"
+        hash_suffix = self.api_key_hash[-4:] if self.api_key_hash else "0000"
+        return f"sb_{tag}_***{hash_suffix}"
+
 
 class Product(Base):
     """Product catalog for integration and orders."""

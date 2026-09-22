@@ -316,8 +316,15 @@ class SQLValidationService:
             WHERE c.id = :customer_id
         """)
         row = self.db.execute(sql, {"customer_id": customer_id}).mappings().first()
-        if not row:
-            return {"query_id": "QUERY_10_INTEGRATION_HEALTH", "found": False, "customer_id": customer_id}
+        if not row or not row.get("customer_id"):
+            return {
+                "query_id": "QUERY_10_INTEGRATION_HEALTH",
+                "title": "Customer Integration Health Scorecard",
+                "found": False,
+                "customer_id": customer_id,
+                "data": None,
+                "diagnostic_finding": f"Customer ID {customer_id} not found in database.",
+            }
 
         d = dict(row)
         total_tests = d["total_test_runs"] or 0
